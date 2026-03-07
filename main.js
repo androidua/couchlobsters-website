@@ -82,8 +82,8 @@ function buildTeaserCard(next) {
   const art1 = next.artworks && safeUrl(next.artworks[0]) !== '#' ? next.artworks[0] : null;
   const art2 = next.artworks && safeUrl(next.artworks[1]) !== '#' ? next.artworks[1] : null;
 
-  const artStyle1 = art1 ? ` style="background-image:url('${art1}');background-size:cover;background-position:center;"` : '';
-  const artStyle2 = art2 ? ` style="background-image:url('${art2}');background-size:cover;background-position:center;"` : '';
+  const artImg1 = art1 ? `<img src="${art1}" alt="${escapeHtml(film1)} poster" class="teaser-film-poster">` : '';
+  const artImg2 = art2 ? `<img src="${art2}" alt="${escapeHtml(film2)} poster" class="teaser-film-poster">` : '';
 
   const badge = next.expectedDate
     ? `<span class="teaser-badge">Coming Soon · ${escapeHtml(next.expectedDate)}</span>`
@@ -101,12 +101,12 @@ function buildTeaserCard(next) {
       </div>
       <div class="teaser-films">
         <div class="teaser-film">
-          <div class="teaser-film-art teaser-film-art--a"${artStyle1}></div>
+          <div class="teaser-film-art teaser-film-art--a">${artImg1}</div>
           <p class="teaser-film-title">${escapeHtml(film1)}</p>
         </div>
         <div class="teaser-vs">VS</div>
         <div class="teaser-film">
-          <div class="teaser-film-art teaser-film-art--b"${artStyle2}></div>
+          <div class="teaser-film-art teaser-film-art--b">${artImg2}</div>
           <p class="teaser-film-title">${escapeHtml(film2)}</p>
         </div>
       </div>
