@@ -839,3 +839,144 @@ a { color: inherit; text-decoration: none; }
   .platform-cards { flex-direction: column; align-items: center; }
   .platform-card { width: 100%; max-width: 280px; flex-direction: row; padding: 16px 20px; }
 }
+
+
+/* ── Next Episode Teaser ───────────────────────────────────────────── */
+.next-episode {
+  padding: 0 0 5rem;
+}
+
+.teaser-card {
+  background: #1c1c1c;
+  border: 1px solid rgba(232, 201, 109, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* gold top-edge shimmer */
+.teaser-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 201, 109, 0.5), transparent);
+  pointer-events: none;
+}
+
+.teaser-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.teaser-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: #e8c96d;
+}
+
+.teaser-badge {
+  background: rgba(232, 201, 109, 0.1);
+  border: 1px solid rgba(232, 201, 109, 0.3);
+  color: #e8c96d;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+}
+
+.teaser-films {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.teaser-film {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.teaser-film-art {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Argo — cool slate blue (political, tense) */
+.teaser-film-art--a {
+  background-image: linear-gradient(135deg, #0a1628 0%, #162540 50%, #0a1010 100%);
+}
+
+/* Brotherhood of the Wolf — warm red-brown (gothic, action) */
+.teaser-film-art--b {
+  background-image: linear-gradient(135deg, #1a0808 0%, #2e1010 50%, #140505 100%);
+}
+
+/* faint "?" watermark on placeholder */
+.teaser-film-art::after {
+  content: '?';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', cursive;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(232, 201, 109, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+.teaser-film-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  letter-spacing: 0.04em;
+  color: #f0ece4;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.teaser-vs {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #e8c96d;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-shadow: 0 0 30px rgba(232, 201, 109, 0.3);
+  flex-shrink: 0;
+}
+
+.teaser-tagline {
+  margin: 1.5rem 0 0;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: #888;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .teaser-films {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  .teaser-vs {
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+  }
+  .teaser-film-art {
+    aspect-ratio: 21/9;
+  }
+}

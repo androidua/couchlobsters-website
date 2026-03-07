@@ -2,6 +2,22 @@
 // Episodes listed newest first (add new episodes to the TOP of this array)
 // Episodes numbered 1–25, matching the RSS feed
 
+// ── Next Episode Teaser ───────────────────────────────────────────────────────
+// Set to null to hide the teaser section entirely.
+// artworks: add poster/artwork URLs when available; leave null for styled placeholders.
+// teaser:   optional one-line tagline shown below the card.
+// expectedDate: optional string e.g. "April 2026".
+const NEXT_EPISODE = {
+  films: ["Argo (2012)", "Brotherhood of the Wolf (2001)"],
+  artworks: [
+    "https://media.themoviedb.org/t/p/w500/m5gPWFZFIp4UJFABgWyLkbXv8GX.jpg",
+    "https://media.themoviedb.org/t/p/w500/Ahd4F7azhjsxgXYjVyFmVzJu9LB.jpg"
+  ],
+  teaser: null,
+  expectedDate: "April 2026"
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
 const EPISODES = [
   {
     num: 25,

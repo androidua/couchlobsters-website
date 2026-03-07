@@ -76,6 +76,53 @@ function buildEpisodeCard(ep) {
   `;
 }
 
+// Build the next-episode teaser card
+function buildTeaserCard(next) {
+  const [film1, film2] = next.films;
+  const art1 = next.artworks && safeUrl(next.artworks[0]) !== '#' ? next.artworks[0] : null;
+  const art2 = next.artworks && safeUrl(next.artworks[1]) !== '#' ? next.artworks[1] : null;
+
+  const artStyle1 = art1 ? ` style="background-image:url('${art1}');background-size:cover;background-position:center;"` : '';
+  const artStyle2 = art2 ? ` style="background-image:url('${art2}');background-size:cover;background-position:center;"` : '';
+
+  const badge = next.expectedDate
+    ? `<span class="teaser-badge">Coming Soon · ${escapeHtml(next.expectedDate)}</span>`
+    : `<span class="teaser-badge">Coming Soon</span>`;
+
+  const tagline = next.teaser
+    ? `<p class="teaser-tagline">"${escapeHtml(next.teaser)}"</p>`
+    : '';
+
+  return `
+    <div class="teaser-card">
+      <div class="teaser-header">
+        <span class="teaser-label">◆ Next Episode</span>
+        ${badge}
+      </div>
+      <div class="teaser-films">
+        <div class="teaser-film">
+          <div class="teaser-film-art teaser-film-art--a"${artStyle1}></div>
+          <p class="teaser-film-title">${escapeHtml(film1)}</p>
+        </div>
+        <div class="teaser-vs">VS</div>
+        <div class="teaser-film">
+          <div class="teaser-film-art teaser-film-art--b"${artStyle2}></div>
+          <p class="teaser-film-title">${escapeHtml(film2)}</p>
+        </div>
+      </div>
+      ${tagline}
+    </div>
+  `;
+}
+
+// Render next episode teaser on homepage
+const teaserSection = document.getElementById('nextEpisodeSection');
+const teaserContainer = document.getElementById('nextEpisodeTeaser');
+if (teaserSection && teaserContainer && typeof NEXT_EPISODE !== 'undefined' && NEXT_EPISODE) {
+  teaserContainer.innerHTML = buildTeaserCard(NEXT_EPISODE);
+  teaserSection.style.display = '';
+}
+
 // Render latest episodes on homepage (show 6 most recent)
 const latestContainer = document.getElementById('latestEpisodes');
 if (latestContainer && typeof EPISODES !== 'undefined') {
