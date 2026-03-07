@@ -17,4 +17,4 @@
   # - Fonts: Google Fonts CDN
   # - Images: self + podcast CDNs (Spotify, podcloud.fr) + data URIs
   # - Connections: self only
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.scdn.co https://uploads.podcloud.fr https://media.themoviedb.org; connect-src 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.scdn.co https://uploads.podcloud.fr https://media.themoviedb.org https://image.tmdb.org; connect-src 'self'; frame-ancestors 'none'
