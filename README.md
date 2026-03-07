@@ -1,5 +1,7 @@
 # Couch Lobsters — Podcast Website
 
+![Version](https://img.shields.io/badge/version-1.0.0-e8c96d) ![Deployed on Cloudflare Pages](https://img.shields.io/badge/hosted-Cloudflare%20Pages-orange)
+
 The official website for **Couch Lobsters**, a film & TV series podcast hosted by Jess & Dima.
 
 **Live site:** [couchlobsters.com](https://couchlobsters.com)
@@ -40,3 +42,17 @@ Each episode, Jess & Dima assign each other a film or TV series to watch — opi
 ├── episodes-data.js  — Episode data array (titles, dates, artwork, links)
 └── main.js           — Nav toggle + episode card rendering
 ```
+
+---
+
+## Versioning
+
+This project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`):
+
+| Bump | When to use | Example change |
+|------|-------------|----------------|
+| **Major** (`v2.0.0`) | Significant new features | Donations, membership, player |
+| **Minor** (`v1.1.0`) | New pages or sections | New About section, search page |
+| **Patch** (`v1.0.1`) | Small updates | Episode added, text fix, spelling |
+
+See all releases on the [Tags page](https://github.com/androidua/couchlobsters-website/tags).
