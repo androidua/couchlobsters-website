@@ -702,6 +702,11 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 16px;
 }
 
+.about-section p.spoiler-warning {
+  color: var(--accent2);
+  font-weight: 500;
+}
+
 /* ============================================
    EPISODES PAGE FILTERS
    ============================================ */
