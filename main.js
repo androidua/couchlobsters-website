@@ -81,6 +81,8 @@ const latestContainer = document.getElementById('latestEpisodes');
 if (latestContainer && typeof EPISODES !== 'undefined') {
   const latest = EPISODES.slice(0, 6);
   latestContainer.innerHTML = latest.map(buildEpisodeCard).join('');
+  const allLink = document.getElementById('allEpisodesLink');
+  if (allLink) allLink.textContent = `All ${EPISODES.length} episodes →`;
 }
 
 // Render ALL episodes on episodes page

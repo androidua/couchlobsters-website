@@ -1,6 +1,6 @@
 // All Couch Lobsters episodes — sourced from RSS feed
-// Episodes listed newest first (episode 27 down to 1)
-// Note: RSS had episode numbers up to 25 but there are 27 total including 2 bonus/unnumbered
+// Episodes listed newest first (add new episodes to the TOP of this array)
+// NOTE: Episodes 1 and 2 are missing — add them here when artwork/links are available
 
 const EPISODES = [
   {
