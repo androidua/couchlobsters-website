@@ -1,0 +1,43 @@
+name: Sync Episodes from RSS
+
+# Runs every day at 8 AM UTC (6 PM AEST / 7 PM AEDT).
+# Can also be triggered manually from the Actions tab on GitHub.
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to commit and push episodes-data.js
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch RSS and update episode data
+        run: python .github/scripts/sync_episodes.py
+
+      - name: Commit and push if new episodes were added
+        run: |
+          if git diff --quiet episodes-data.js; then
+            echo "episodes-data.js unchanged — nothing to commit."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add episodes-data.js
+            git commit -m "chore: auto-sync new episode(s) from RSS feed"
+            git push
+            echo "Pushed updated episodes-data.js — Cloudflare Pages will deploy shortly."
+          fi
