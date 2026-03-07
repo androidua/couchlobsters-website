@@ -12,9 +12,9 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 
   # Content Security Policy — allowlist only trusted sources
-  # - Scripts: self only (no inline scripts from external sources)
+  # - Scripts: self + Cloudflare Insights (auto-injected by Cloudflare Pages)
   # - Styles: self + Google Fonts
   # - Fonts: Google Fonts CDN
   # - Images: self + podcast CDNs (Spotify, podcloud.fr) + data URIs
-  # - Connections: self only
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.scdn.co https://uploads.podcloud.fr https://media.themoviedb.org https://image.tmdb.org; connect-src 'self'; frame-ancestors 'none'
+  # - Connections: self + Cloudflare Insights beacon reporting
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.scdn.co https://uploads.podcloud.fr https://media.themoviedb.org https://image.tmdb.org; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'

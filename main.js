@@ -120,7 +120,7 @@ const teaserSection = document.getElementById('nextEpisodeSection');
 const teaserContainer = document.getElementById('nextEpisodeTeaser');
 if (teaserSection && teaserContainer && typeof NEXT_EPISODE !== 'undefined' && NEXT_EPISODE) {
   teaserContainer.innerHTML = buildTeaserCard(NEXT_EPISODE);
-  teaserSection.style.display = '';
+  teaserSection.classList.add('is-visible');
 }
 
 // Render latest episodes on homepage (show 6 most recent)
