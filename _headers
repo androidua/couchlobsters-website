@@ -1,0 +1,20 @@
+/*
+  # Prevent clickjacking — block site from being embedded in iframes
+  X-Frame-Options: DENY
+
+  # Stop browsers from guessing content types (MIME sniffing)
+  X-Content-Type-Options: nosniff
+
+  # Control referrer information sent to external sites
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Restrict browser features not needed by this site
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+  # Content Security Policy — allowlist only trusted sources
+  # - Scripts: self only (no inline scripts from external sources)
+  # - Styles: self + Google Fonts
+  # - Fonts: Google Fonts CDN
+  # - Images: self + podcast CDNs (Spotify, podcloud.fr) + data URIs
+  # - Connections: self only
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.scdn.co https://uploads.podcloud.fr; connect-src 'self'; frame-ancestors 'none'
