@@ -82,8 +82,8 @@ function buildTeaserCard(next) {
   const art1 = next.artworks && safeUrl(next.artworks[0]) !== '#' ? next.artworks[0] : null;
   const art2 = next.artworks && safeUrl(next.artworks[1]) !== '#' ? next.artworks[1] : null;
 
-  const artImg1 = art1 ? `<img src="${art1}" alt="${escapeHtml(film1)} poster" class="teaser-film-poster">` : '';
-  const artImg2 = art2 ? `<img src="${art2}" alt="${escapeHtml(film2)} poster" class="teaser-film-poster">` : '';
+  const artImg1 = art1 ? `<img src="${art1}" alt="${escapeHtml(film1)} poster" class="teaser-film-poster" loading="lazy">` : '';
+  const artImg2 = art2 ? `<img src="${art2}" alt="${escapeHtml(film2)} poster" class="teaser-film-poster" loading="lazy">` : '';
 
   const badge = next.expectedDate
     ? `<span class="teaser-badge">Coming Soon · ${escapeHtml(next.expectedDate)}</span>`
