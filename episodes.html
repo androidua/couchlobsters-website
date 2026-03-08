@@ -4,7 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Episodes — Couch Lobsters Podcast</title>
-  <meta name="description" content="All episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Full of spoilers.">
+  <meta name="description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes. Listen on Spotify and Apple Podcasts.">
+  <link rel="canonical" href="https://couchlobsters.com/episodes.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Couch Lobsters">
+  <meta property="og:locale" content="en_AU">
+  <meta property="og:url" content="https://couchlobsters.com/episodes.html">
+  <meta property="og:title" content="Episodes — Couch Lobsters Podcast">
+  <meta property="og:description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
+  <meta property="og:image" content="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6">
+  <meta property="og:image:alt" content="Couch Lobsters podcast logo">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Episodes — Couch Lobsters Podcast">
+  <meta name="twitter:description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
+  <meta name="twitter:image" content="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6">
+
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/rss+xml" title="Couch Lobsters Podcast" href="https://couch-lobsters.lepodcast.fr/rss">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://couchlobsters.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Episodes",
+        "item": "https://couchlobsters.com/episodes.html"
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
@@ -34,10 +77,17 @@
   <section class="episodes-page">
     <div class="container">
       <h1 class="page-title">All <em>Episodes</em></h1>
-      <p class="episodes-count" id="episodeCount">27 episodes</p>
+      <p class="episodes-count" id="episodeCount">25 episodes</p>
       <div class="episodes-grid" id="allEpisodes">
         <!-- Populated by JS -->
       </div>
+      <noscript>
+        <p>Please enable JavaScript to view the episode list, or listen directly on
+          <a href="https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y">Spotify</a>,
+          <a href="https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927">Apple Podcasts</a>, or
+          <a href="https://www.deezer.com/en/show/5945017">Deezer</a>.
+        </p>
+      </noscript>
     </div>
   </section>
 

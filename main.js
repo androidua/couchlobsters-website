@@ -138,4 +138,34 @@ if (allContainer && typeof EPISODES !== 'undefined') {
   allContainer.innerHTML = EPISODES.map(buildEpisodeCard).join('');
   const countEl = document.getElementById('episodeCount');
   if (countEl) countEl.textContent = `${EPISODES.length} episodes`;
+
+  // Inject episode ItemList JSON-LD for SEO (keeps structured data in sync with episode array)
+  const episodeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': 'Couch Lobsters Episodes',
+    'url': 'https://couchlobsters.com/episodes.html',
+    'numberOfItems': EPISODES.length,
+    'itemListElement': EPISODES.map((ep, i) => ({
+      '@type': 'ListItem',
+      'position': i + 1,
+      'item': {
+        '@type': 'PodcastEpisode',
+        'name': ep.title,
+        'url': ep.spotifyUrl,
+        'datePublished': ep.date,
+        'timeRequired': ep.duration,
+        'image': ep.artwork,
+        'partOfSeries': {
+          '@type': 'PodcastSeries',
+          'name': 'Couch Lobsters',
+          'url': 'https://couchlobsters.com/'
+        }
+      }
+    }))
+  };
+  const ldScript = document.createElement('script');
+  ldScript.type = 'application/ld+json';
+  ldScript.textContent = JSON.stringify(episodeJsonLd);
+  document.head.appendChild(ldScript);
 }
