@@ -44,7 +44,7 @@ jobs:
           out = [
               '// Auto-generated from Google Sheets — do not edit manually.',
               '// To update: edit the Google Sheet; GitHub Actions syncs it hourly.',
-              'const WATCHING = [',
+              'var WATCHING = [',
           ]
           for i, r in enumerate(rows):
               comma = '' if i == len(rows) - 1 else ','
