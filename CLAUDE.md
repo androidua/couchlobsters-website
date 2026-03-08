@@ -29,6 +29,8 @@ couchlobsters-website/
 ├── episodes-data.js    ← Episode data array + NEXT_EPISODE teaser config
 ├── watching-data.js    ← Watching picks — auto-generated from Google Sheets (do not edit manually)
 ├── main.js             ← Nav toggle + episode card rendering + watching page logic
+├── favicon.jpg         ← Self-hosted podcast logo (300×300 JPEG) — used as <link rel="icon"> on all pages
+├── favicon.ico         ← ICO binary (16×16 + 64×64 PNG) — required for Safari's /favicon.ico domain lookup
 ├── _headers            ← Cloudflare Pages security headers (CSP, X-Frame-Options, etc.)
 ├── .github/workflows/sync-watching.yml  ← Hourly GitHub Action: Google Sheets CSV → watching-data.js
 └── CLAUDE.md           ← This file
@@ -47,6 +49,11 @@ couchlobsters-website/
   Data lives in `watching-data.js` (auto-generated — do not edit manually).
   Managed via Google Sheets; a GitHub Actions workflow (`.github/workflows/sync-watching.yml`) fetches the sheet
   as CSV hourly and commits `watching-data.js` only when content has changed.
+  Uses `var WATCHING` (not `const`) — Safari scopes top-level `const` to the declaring script; `var` attaches
+  to `window` and is visible across all script tags. Do not change to `const`.
+- **Favicon** is self-hosted: `favicon.jpg` (used via `<link rel="icon">` on all pages) + `favicon.ico` (binary
+  ICO in repo root — Safari auto-requests `/favicon.ico` for root-domain URLs; without this file Cloudflare Pages
+  serves `index.html` instead, causing the tab icon to fall back to a letter).
 - **Fonts** are loaded from Google Fonts: Bebas Neue (display), DM Sans (body), Playfair Display (italic accents).
 - **Security headers** are set in `_headers` (Cloudflare Pages format). CSP allowlists Cloudflare Insights, Google Fonts, and podcast image CDNs.
 
@@ -155,16 +162,7 @@ git push
 ```
 
 Cloudflare Pages will auto-deploy within ~2 minutes.
-The live site will be at couchlobsters.com once the custom domain is connected.
-
----
-
-## Custom Domain Setup (Pending)
-
-The domain `couchlobsters.com` is registered at Cloudflare Registrar.
-The Cloudflare Pages project is called `couchlobsters-website`.
-To connect the domain: Cloudflare Pages dashboard → project → Custom domains → Add `couchlobsters.com`.
-Since the domain is already at Cloudflare, the DNS will update automatically.
+The live site is at https://couchlobsters.com.
 
 ---
 
@@ -179,7 +177,7 @@ Semantic versioning — bump in README badge + git tag in same commit:
 git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
-Current version: **v1.3.0**
+Current version: **v1.3.3**
 
 ### Pre-commit README checklist (minor and major bumps)
 
@@ -193,8 +191,8 @@ Before committing a **minor or major** version bump, always check:
 
 ## Things Still To Do
 
-- [ ] Connect couchlobsters.com custom domain to Cloudflare Pages project
-- [x] Add favicon ✓
+- [x] Connect couchlobsters.com custom domain to Cloudflare Pages project ✓
+- [x] Add favicon ✓ (self-hosted favicon.jpg + favicon.ico for Safari)
 - [x] What We're Watching page with Google Sheets sync ✓
 - [ ] Consider adding individual episode pages (optional — not planned yet)
 - [ ] Add host photos to About page when available
