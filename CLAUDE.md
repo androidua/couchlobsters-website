@@ -95,6 +95,32 @@ couchlobsters-website/
 
 ---
 
+## How to Update the Next Episode Teaser
+
+The teaser is the "Coming Soon" card on the homepage. It lives at the top of `episodes-data.js`.
+
+**The user only needs to say:** the two film names (with years) and an expected date.
+Claude should handle everything else — finding artwork URLs from TMDB and updating the file.
+
+```javascript
+const NEXT_EPISODE = {
+  films: ["Film A (year)", "Film B (year)"],   // shown as "VS" on the card
+  artworks: [
+    "https://...",   // poster for Film A — use TMDB: https://www.themoviedb.org/
+    "https://..."    // poster for Film B — use TMDB URL format: https://media.themoviedb.org/t/p/w500/POSTER_PATH.jpg
+  ],
+  teaser: null,           // optional one-line tagline e.g. "Two classics. One winner." — or null
+  expectedDate: "April 2026"  // free-form string shown on the card — or null to omit
+};
+```
+
+**To hide the teaser entirely** (e.g. between seasons): set `NEXT_EPISODE = null`.
+
+**TMDB poster URL pattern:** `https://media.themoviedb.org/t/p/w500/POSTER_PATH.jpg`
+Find it by searching the film on https://www.themoviedb.org/ and copying the poster path from the image URL.
+
+---
+
 ## How to Add a New Episode
 
 When a new episode is published, add it to the **top** of the `EPISODES` array
