@@ -1,6 +1,6 @@
 # Couch Lobsters — Podcast Website
 
-![Version](https://img.shields.io/badge/version-1.0.7-e8c96d) ![Deployed on Cloudflare Pages](https://img.shields.io/badge/hosted-Cloudflare%20Pages-orange)
+![Version](https://img.shields.io/badge/version-1.3.0-e8c96d) ![Deployed on Cloudflare Pages](https://img.shields.io/badge/hosted-Cloudflare%20Pages-orange)
 
 The official website for **Couch Lobsters**, a film & TV series podcast hosted by Jess & Dima.
 
@@ -37,10 +37,13 @@ Each episode, Jess & Dima assign each other a film or TV series to watch — opi
 ```
 ├── index.html        — Homepage (hero, latest episodes, platform links)
 ├── episodes.html     — All episodes grid
+├── watching.html     — What We're Watching (filterable grid)
 ├── about.html        — About the show and hosts
 ├── style.css         — Dark cinematic theme, gold accent #e8c96d
 ├── episodes-data.js  — Episode data array (titles, dates, artwork, links)
-└── main.js           — Nav toggle + episode card rendering
+├── watching-data.js  — Watching picks (auto-synced from Google Sheets)
+├── main.js           — Nav toggle + episode card + watching page logic
+└── .github/workflows/sync-watching.yml — Hourly Google Sheets → watching-data.js sync
 ```
 
 ---
