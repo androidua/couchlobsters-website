@@ -17,7 +17,7 @@ jobs:
       - name: Fetch CSV from Google Sheets
         run: |
           curl --fail -sL \
-            "https://docs.google.com/spreadsheets/d/REPLACE_WITH_YOUR_SHEET_ID/export?format=csv" \
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXcTB0MsHrHcdx3zaoBa9HrVzt_Uc1ZpvhF1vGQECJ_3GF0KteGkOV_GXYGToMGizN0YfB_zbXBwBE/pub?gid=0&single=true&output=csv" \
             -o /tmp/watching.csv
 
       - name: Convert CSV → watching-data.js
