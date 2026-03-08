@@ -146,7 +146,7 @@ https://couch-lobsters.lepodcast.fr/rss
 
 ## Deploying Changes
 
-After making any changes:
+This is a **solo project** — push directly to `main`. No branches, no pull requests.
 
 ```bash
 git add .
