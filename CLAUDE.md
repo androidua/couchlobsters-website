@@ -269,3 +269,8 @@ Security headers live in `_headers` (Cloudflare Pages format). Keep all of these
 - All data inserted via `innerHTML` must pass through `escapeHtml()` — prevents XSS
 - All URLs used in `href`/`src` attributes must pass through `safeUrl()` — prevents `javascript:` injection
 - These two helpers must remain in place whenever new card types or data sources are added
+- **Never use `onerror="..."` inline event attributes** — treated as `'unsafe-inline'` by CSP `script-src`; blocked by the site's own headers
+- After every `innerHTML` assignment on a container with images, call `attachImageFallbacks(container)`
+  - Images that should fall back to the podcast cover: add `data-fallback="${ARTWORK_FALLBACK}"` to the `<img>` tag
+  - Images that should be removed on failure (e.g. teaser posters): add `data-fallback="remove"`
+  - `ARTWORK_FALLBACK` constant at top of `main.js` holds the Spotify CDN podcast cover URL
