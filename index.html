@@ -97,6 +97,7 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="episodes.html">Episodes</a></li>
+      <li><a href="watching.html">Watching</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
   </nav>
@@ -175,6 +176,18 @@
     </div>
   </section>
 
+  <!-- CURRENTLY WATCHING TEASER -->
+  <section class="watching-preview">
+    <div class="container">
+      <div class="section-header">
+        <h2>Currently <em>Watching</em></h2>
+        <a href="watching.html" class="link-arrow">All picks →</a>
+      </div>
+      <!-- Populated by JS — renders items with status "Watching", split by host -->
+      <div class="watching-split" id="watchingTeaser"></div>
+    </div>
+  </section>
+
   <!-- LISTEN SECTION -->
   <section class="listen">
     <div class="container">
@@ -217,6 +230,7 @@
           <nav>
             <a href="index.html">Home</a>
             <a href="episodes.html">Episodes</a>
+            <a href="watching.html">Watching</a>
             <a href="about.html">About</a>
           </nav>
           <nav>
@@ -233,6 +247,7 @@
   </footer>
 
   <script src="episodes-data.js"></script>
+  <script src="watching-data.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

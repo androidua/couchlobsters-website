@@ -169,3 +169,153 @@ if (allContainer && typeof EPISODES !== 'undefined') {
   ldScript.textContent = JSON.stringify(episodeJsonLd);
   document.head.appendChild(ldScript);
 }
+
+
+// ============================================
+// WHAT WE'RE WATCHING
+// ============================================
+
+// Format "2026-02" → "Feb 2026"
+function formatWatchDate(dateStr) {
+  const parts = String(dateStr).split('-');
+  if (parts.length < 2) return dateStr;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const idx = parseInt(parts[1], 10) - 1;
+  return `${months[idx] || ''} ${parts[0]}`;
+}
+
+// Build a single watch card (used on both homepage teaser and full page)
+function buildWatchCard(item) {
+  const statusKey = {
+    'Watching':      'watching',
+    'Watched':       'watched',
+    'Want to Watch': 'want'
+  }[item.status] || 'want';
+
+  const whoClass = item.who === 'Jess' ? 'jess' : 'dima';
+  const initial  = escapeHtml(item.who.charAt(0));
+  const date     = escapeHtml(formatWatchDate(item.date));
+  const note     = item.notes
+    ? `<p class="watch-note">\u201c${escapeHtml(item.notes)}\u201d</p>`
+    : '';
+
+  return `
+    <div class="watch-card" data-status="${escapeHtml(item.status)}" data-who="${escapeHtml(item.who)}">
+      <div class="watch-card-top">
+        <span class="watch-type-badge">${escapeHtml(item.type)}</span>
+        <span class="watch-status-badge watch-status--${statusKey}">${escapeHtml(item.status)}</span>
+      </div>
+      <div class="watch-title">${escapeHtml(item.title)}</div>
+      <div class="watch-meta">
+        <div class="watch-avatar watch-avatar--${whoClass}">${initial}</div>
+        <div class="watch-meta-text">
+          <span class="watch-who">${escapeHtml(item.who)}</span>
+          <span aria-hidden="true">·</span>
+          <span>${date}</span>
+        </div>
+      </div>
+      ${note}
+    </div>
+  `;
+}
+
+// ── Homepage: "Currently Watching" two-column host split ─────────────────────
+const watchingTeaserEl = document.getElementById('watchingTeaser');
+if (watchingTeaserEl && typeof WATCHING !== 'undefined') {
+  const current   = WATCHING.filter(i => i.status === 'Watching');
+  const jessItems = current.filter(i => i.who === 'Jess').slice(0, 2);
+  const dimaItems = current.filter(i => i.who === 'Dima').slice(0, 2);
+
+  const renderHostCol = (name, items, cls) => {
+    const cards = items.length
+      ? items.map(buildWatchCard).join('')
+      : `<p class="watch-empty">Nothing on rotation right now.</p>`;
+    return `
+      <div class="watching-host-col">
+        <div class="watching-host-label">
+          <div class="watch-avatar watch-avatar--${cls}">${name.charAt(0)}</div>
+          <span>${escapeHtml(name)}</span>
+        </div>
+        ${cards}
+      </div>
+    `;
+  };
+
+  watchingTeaserEl.innerHTML =
+    renderHostCol('Jess', jessItems, 'jess') +
+    renderHostCol('Dima', dimaItems, 'dima');
+}
+
+// ── Full watching page: filterable grid ──────────────────────────────────────
+const watchGridEl = document.getElementById('watchGrid');
+if (watchGridEl && typeof WATCHING !== 'undefined') {
+  let activeStatus = 'all';
+  let activePerson = 'all';
+  let activeYear   = 'all';
+
+  // Build year pills from the data; only reveal the group when 2+ distinct years exist.
+  // Years are derived from item.date ("YYYY-MM") — no HTML changes needed when new years arrive.
+  const yearWrapperEl = document.getElementById('yearFilterWrapper');
+  if (yearWrapperEl) {
+    const years = [...new Set(WATCHING.map(i => String(i.date).split('-')[0]))].sort((a, b) => b - a);
+    if (years.length >= 2) {
+      const yearGroupEl = document.getElementById('yearFilters');
+      if (yearGroupEl) {
+        yearGroupEl.innerHTML =
+          '<button class="watch-filter-btn active" data-filter-year="all">All</button>' +
+          years.map(y => `<button class="watch-filter-btn" data-filter-year="${escapeHtml(y)}">${escapeHtml(y)}</button>`).join('');
+      }
+      yearWrapperEl.classList.add('is-visible');
+    }
+  }
+
+  function renderWatchGrid() {
+    const filtered = WATCHING.filter(item => {
+      const statusOk = activeStatus === 'all' || item.status === activeStatus;
+      const personOk = activePerson === 'all' || item.who === activePerson;
+      const yearOk   = activeYear   === 'all' || String(item.date).split('-')[0] === activeYear;
+      return statusOk && personOk && yearOk;
+    });
+
+    watchGridEl.innerHTML = filtered.length
+      ? filtered.map(buildWatchCard).join('')
+      : '<p class="watch-empty watch-empty--full">Nothing matches those filters yet.</p>';
+
+    const countEl = document.getElementById('watchCount');
+    if (countEl) {
+      countEl.textContent = `${filtered.length} ${filtered.length === 1 ? 'pick' : 'picks'}`;
+    }
+  }
+
+  // Wire status filter buttons
+  document.querySelectorAll('[data-filter-status]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeStatus = btn.dataset.filterStatus;
+      document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderWatchGrid();
+    });
+  });
+
+  // Wire person filter buttons
+  document.querySelectorAll('[data-filter-person]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activePerson = btn.dataset.filterPerson;
+      document.querySelectorAll('[data-filter-person]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderWatchGrid();
+    });
+  });
+
+  // Wire year filter buttons (dynamically inserted above when 2+ years of data exist)
+  document.querySelectorAll('[data-filter-year]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeYear = btn.dataset.filterYear;
+      document.querySelectorAll('[data-filter-year]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderWatchGrid();
+    });
+  });
+
+  renderWatchGrid();
+}

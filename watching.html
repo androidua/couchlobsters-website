@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Episodes — Couch Lobsters Podcast</title>
-  <meta name="description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes. Listen on Spotify and Apple Podcasts.">
-  <link rel="canonical" href="https://couchlobsters.com/episodes.html">
+  <title>What We're Watching — Couch Lobsters</title>
+  <meta name="description" content="What Jess & Dima are watching right now, what they've finished, and what's on their list. No spoilers. Mostly.">
+  <link rel="canonical" href="https://couchlobsters.com/watching.html">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Couch Lobsters">
   <meta property="og:locale" content="en_AU">
-  <meta property="og:url" content="https://couchlobsters.com/episodes.html">
-  <meta property="og:title" content="Episodes — Couch Lobsters Podcast">
-  <meta property="og:description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
+  <meta property="og:url" content="https://couchlobsters.com/watching.html">
+  <meta property="og:title" content="What We're Watching — Couch Lobsters">
+  <meta property="og:description" content="What Jess & Dima are watching right now, what they've finished, and what's on their list.">
   <meta property="og:image" content="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6">
   <meta property="og:image:alt" content="Couch Lobsters podcast logo">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Episodes — Couch Lobsters Podcast">
-  <meta name="twitter:description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
+  <meta name="twitter:title" content="What We're Watching — Couch Lobsters">
+  <meta name="twitter:description" content="What Jess & Dima are watching right now, what they've finished, and what's on their list.">
   <meta name="twitter:image" content="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6">
 
   <!-- RSS Feed -->
@@ -41,8 +41,8 @@
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Episodes",
-        "item": "https://couchlobsters.com/episodes.html"
+        "name": "What We're Watching",
+        "item": "https://couchlobsters.com/watching.html"
       }
     ]
   }
@@ -68,27 +68,55 @@
     </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Home</a></li>
-      <li><a href="episodes.html" class="active">Episodes</a></li>
-      <li><a href="watching.html">Watching</a></li>
+      <li><a href="episodes.html">Episodes</a></li>
+      <li><a href="watching.html" class="active">Watching</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
   </nav>
 
   <!-- PAGE HERO -->
-  <section class="episodes-page">
+  <section class="page-hero">
     <div class="container">
-      <h1 class="page-title">All <em>Episodes</em></h1>
-      <p class="episodes-count" id="episodeCount">25 episodes</p>
-      <div class="episodes-grid" id="allEpisodes">
-        <!-- Populated by JS -->
+      <p class="hero-label">Jess &amp; Dima</p>
+      <h1 class="page-title">What We're <em>Watching</em></h1>
+      <p class="watching-page-intro">
+        Between episodes, we keep watching. Here's what's on our screens right now,
+        what we've recently finished, and what's sitting on the list.
+        No spoilers. Mostly.
+      </p>
+    </div>
+  </section>
+
+  <!-- WATCHING PAGE -->
+  <section class="watching-page">
+    <div class="container">
+
+      <!-- Filter bar -->
+      <div class="watch-filters" role="group" aria-label="Filter picks">
+        <div class="watch-filter-group" aria-label="Filter by status">
+          <button class="watch-filter-btn active" data-filter-status="all">All</button>
+          <button class="watch-filter-btn" data-filter-status="Watching">Watching</button>
+          <button class="watch-filter-btn" data-filter-status="Watched">Watched</button>
+          <button class="watch-filter-btn" data-filter-status="Want to Watch">Want to Watch</button>
+        </div>
+        <div class="watch-filter-divider" aria-hidden="true"></div>
+        <div class="watch-filter-group" aria-label="Filter by person">
+          <button class="watch-filter-btn active" data-filter-person="all">All</button>
+          <button class="watch-filter-btn" data-filter-person="Jess">Jess</button>
+          <button class="watch-filter-btn" data-filter-person="Dima">Dima</button>
+        </div>
+        <!-- Year filter: hidden by default; JS reveals and populates it when 2+ distinct years exist -->
+        <div class="watch-filter-year-wrapper" id="yearFilterWrapper">
+          <div class="watch-filter-divider" aria-hidden="true"></div>
+          <div class="watch-filter-group" id="yearFilters" aria-label="Filter by year"></div>
+        </div>
       </div>
-      <noscript>
-        <p>Please enable JavaScript to view the episode list, or listen directly on
-          <a href="https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y">Spotify</a>,
-          <a href="https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927">Apple Podcasts</a>, or
-          <a href="https://www.deezer.com/en/show/5945017">Deezer</a>.
-        </p>
-      </noscript>
+
+      <p class="watch-count" id="watchCount">Loading…</p>
+
+      <!-- Card grid — populated by JS -->
+      <div class="watch-grid" id="watchGrid"></div>
+
     </div>
   </section>
 
@@ -121,6 +149,7 @@
   </footer>
 
   <script src="episodes-data.js"></script>
+  <script src="watching-data.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

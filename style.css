@@ -1012,3 +1012,302 @@ a { color: inherit; text-decoration: none; }
     aspect-ratio: 21/9;
   }
 }
+
+
+/* ============================================
+   WHAT WE'RE WATCHING — Shared Card Component
+   ============================================ */
+
+.watch-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all var(--transition);
+}
+
+.watch-card:hover {
+  border-color: rgba(232, 201, 109, 0.22);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.watch-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Film / Series type label */
+.watch-type-badge {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* Status pill */
+.watch-status-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.watch-status--watching {
+  background: rgba(232, 201, 109, 0.12);
+  border: 1px solid rgba(232, 201, 109, 0.32);
+  color: var(--accent);
+}
+
+.watch-status--watched {
+  background: rgba(90, 170, 115, 0.1);
+  border: 1px solid rgba(90, 170, 115, 0.25);
+  color: #7abb8a;
+}
+
+.watch-status--want {
+  background: rgba(201, 75, 58, 0.1);
+  border: 1px solid rgba(201, 75, 58, 0.25);
+  color: var(--accent2);
+}
+
+/* Title */
+.watch-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 28px);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--text);
+}
+
+/* Host row */
+.watch-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+/* Initial avatar circle */
+.watch-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.watch-avatar--jess {
+  background: rgba(232, 201, 109, 0.15);
+  border: 1px solid rgba(232, 201, 109, 0.4);
+  color: var(--accent);
+}
+
+.watch-avatar--dima {
+  background: rgba(240, 236, 228, 0.07);
+  border: 1px solid rgba(240, 236, 228, 0.18);
+  color: var(--text);
+}
+
+.watch-meta-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.watch-who { color: var(--text-muted); font-weight: 500; }
+
+/* Optional italic note */
+.watch-note {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-top: 2px;
+}
+
+/* Empty state (homepage col or full grid) */
+.watch-empty {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 16px 0;
+}
+
+
+/* ============================================
+   WHAT WE'RE WATCHING — Homepage Teaser
+   ============================================ */
+
+.watching-preview {
+  padding: 80px 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Two-column host split (Jess | Dima) */
+.watching-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.watching-host-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* "J JESS" / "D DIMA" column header */
+.watching-host-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+
+/* ============================================
+   WHAT WE'RE WATCHING — Full Page
+   ============================================ */
+
+.watching-page {
+  padding: 120px 0 100px;
+}
+
+.watching-page-intro {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 12px;
+}
+
+.watch-count {
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 36px;
+}
+
+/* Filter bar */
+.watch-filters {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.watch-filter-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Vertical divider between status and person groups */
+.watch-filter-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.watch-filter-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.watch-filter-btn:hover {
+  border-color: rgba(232, 201, 109, 0.3);
+  color: var(--text);
+}
+
+.watch-filter-btn.active {
+  background: var(--accent-soft);
+  border-color: rgba(232, 201, 109, 0.4);
+  color: var(--accent);
+}
+
+/* Card grid */
+.watch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.watch-empty--full {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 0;
+  font-size: 15px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+
+/* ============================================
+   WATCHING — Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .watching-split {
+    grid-template-columns: 1fr;
+  }
+
+  .watch-filters {
+    gap: 10px;
+  }
+
+  .watch-filter-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .watch-grid { grid-template-columns: 1fr; }
+}
+
+/* Year filter wrapper — hidden until JS detects 2+ distinct years in the data.
+   display:contents makes the wrapper invisible as a flex item so the nested divider
+   and year pill group participate directly in the parent flex layout. */
+.watch-filter-year-wrapper { display: none; }
+.watch-filter-year-wrapper.is-visible { display: contents; }
