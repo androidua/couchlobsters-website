@@ -1,6 +1,6 @@
 # Couch Lobsters — Podcast Website
 
-![Version](https://img.shields.io/badge/version-1.3.0-e8c96d) ![Deployed on Cloudflare Pages](https://img.shields.io/badge/hosted-Cloudflare%20Pages-orange)
+![Version](https://img.shields.io/badge/version-1.3.2-e8c96d) ![Deployed on Cloudflare Pages](https://img.shields.io/badge/hosted-Cloudflare%20Pages-orange)
 
 The official website for **Couch Lobsters**, a film & TV series podcast hosted by Jess & Dima.
 
