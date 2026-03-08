@@ -23,11 +23,14 @@ Jess & Dima. Built as plain HTML/CSS/JS (no frameworks, no build step required).
 couchlobsters-website/
 ├── index.html          ← Homepage (hero, concept, latest episodes, platform links, next episode teaser)
 ├── episodes.html       ← All episodes page (full grid of all episodes)
+├── watching.html       ← What We're Watching page (filterable grid: status × person × year)
 ├── about.html          ← About page (show description + host bios)
 ├── style.css           ← All styles (dark cinematic theme, gold accent #e8c96d)
 ├── episodes-data.js    ← Episode data array + NEXT_EPISODE teaser config
-├── main.js             ← Nav toggle + episode card rendering logic
+├── watching-data.js    ← Watching picks — auto-generated from Google Sheets (do not edit manually)
+├── main.js             ← Nav toggle + episode card rendering + watching page logic
 ├── _headers            ← Cloudflare Pages security headers (CSP, X-Frame-Options, etc.)
+├── .github/workflows/sync-watching.yml  ← Hourly GitHub Action: Google Sheets CSV → watching-data.js
 └── CLAUDE.md           ← This file
 ```
 
@@ -40,6 +43,10 @@ couchlobsters-website/
   Both `index.html` (shows latest 6 on desktop, 4 on mobile) and `episodes.html` (shows all) pull from this same array.
 - **Next Episode teaser** is driven by `NEXT_EPISODE` in `episodes-data.js`. Set to `null` to hide the section.
 - **Episode artwork** is hotlinked directly from the podcast RSS feed CDN (podcloud.fr).
+- **What We're Watching** is a filterable page (`watching.html`) showing picks by Jess & Dima.
+  Data lives in `watching-data.js` (auto-generated — do not edit manually).
+  Managed via Google Sheets; a GitHub Actions workflow (`.github/workflows/sync-watching.yml`) fetches the sheet
+  as CSV hourly and commits `watching-data.js` only when content has changed.
 - **Fonts** are loaded from Google Fonts: Bebas Neue (display), DM Sans (body), Playfair Display (italic accents).
 - **Security headers** are set in `_headers` (Cloudflare Pages format). CSP allowlists Cloudflare Insights, Google Fonts, and podcast image CDNs.
 
@@ -146,7 +153,15 @@ Semantic versioning — bump in README badge + git tag in same commit:
 git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
-Current version: **v1.0.6**
+Current version: **v1.3.0**
+
+### Pre-commit README checklist (minor and major bumps)
+
+Before committing a **minor or major** version bump, always check:
+- [ ] README version badge updated (`![Version](https://img.shields.io/badge/version-X.Y.Z-e8c96d)`)
+- [ ] README **Tech Stack** still accurately describes how the site works
+- [ ] README **Project Structure** lists all key files
+- [ ] CLAUDE.md **File Structure** and **How the Site Works** are up to date
 
 ---
 
@@ -154,6 +169,7 @@ Current version: **v1.0.6**
 
 - [ ] Connect couchlobsters.com custom domain to Cloudflare Pages project
 - [x] Add favicon ✓
+- [x] What We're Watching page with Google Sheets sync ✓
 - [ ] Consider adding individual episode pages (optional — not planned yet)
 - [ ] Add host photos to About page when available
 - [ ] Update episode data whenever new episodes are published (or let GitHub Actions sync do it)

@@ -31,6 +31,7 @@ Each episode, Jess & Dima assign each other a film or TV series to watch — opi
 - Hosted on [Cloudflare Pages](https://pages.cloudflare.com/) — auto-deploys on push to `main`
 - Episode data driven from a single JS array in `episodes-data.js`
 - Episode artwork hotlinked from the podcast RSS feed CDN
+- Watching picks managed in Google Sheets, synced hourly to `watching-data.js` via GitHub Actions
 
 ## Project Structure
 
