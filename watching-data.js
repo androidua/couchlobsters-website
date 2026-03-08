@@ -1,8 +1,9 @@
 // ============================================
 // WHAT WE'RE WATCHING — Couch Lobsters
 // ============================================
-// Manually curated picks by Jess & Dima.
-// Later: this file will be auto-generated from a shared Google Sheet.
+// Auto-generated from Google Sheets — do not edit manually.
+// To update: edit the Google Sheet; GitHub Actions syncs it hourly.
+// Sheet setup: see .github/workflows/sync-watching.yml
 //
 // Statuses : "Watching" | "Watched" | "Want to Watch"
 // Types    : "Film" | "Series"

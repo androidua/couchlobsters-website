@@ -1,0 +1,68 @@
+name: Sync watching data from Google Sheets
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # Hourly — only commits when data actually changed
+  workflow_dispatch:        # Also triggerable manually from GitHub Actions UI
+
+permissions:
+  contents: write           # Allows GITHUB_TOKEN to push commits
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch CSV from Google Sheets
+        run: |
+          curl --fail -sL \
+            "https://docs.google.com/spreadsheets/d/REPLACE_WITH_YOUR_SHEET_ID/export?format=csv" \
+            -o /tmp/watching.csv
+
+      - name: Convert CSV → watching-data.js
+        run: |
+          python3 - <<'PYEOF'
+          import csv, json
+
+          rows = []
+          with open('/tmp/watching.csv', newline='', encoding='utf-8-sig') as f:
+              for row in csv.DictReader(f):
+                  # Skip blank rows (e.g. accidental empty lines in the sheet)
+                  if not row.get('title', '').strip():
+                      continue
+                  rows.append({
+                      'title':  row.get('title',  '').strip(),
+                      'who':    row.get('who',    '').strip(),
+                      'type':   row.get('type',   '').strip(),
+                      'status': row.get('status', '').strip(),
+                      'date':   row.get('date',   '').strip(),
+                      'notes':  row.get('notes',  '').strip(),
+                  })
+
+          # Build the JS file — no timestamp so the file only changes when data changes
+          out = [
+              '// Auto-generated from Google Sheets — do not edit manually.',
+              '// To update: edit the Google Sheet; GitHub Actions syncs it hourly.',
+              'const WATCHING = [',
+          ]
+          for i, r in enumerate(rows):
+              comma = '' if i == len(rows) - 1 else ','
+              out.append(f'  {json.dumps(r, ensure_ascii=False)}{comma}')
+          out.append('];')
+
+          with open('watching-data.js', 'w', encoding='utf-8') as f:
+              f.write('\n'.join(out) + '\n')
+
+          print(f'Wrote {len(rows)} entries to watching-data.js')
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git diff --quiet watching-data.js || (
+            git add watching-data.js &&
+            git commit -m "chore: sync watching data ($(date -u '+%Y-%m-%d %H:%M UTC'))" &&
+            git push
+          )
