@@ -25,6 +25,36 @@ if (navToggle && navLinks) {
   });
 }
 
+// Podcast cover used as fallback when episode artwork fails to load
+const ARTWORK_FALLBACK = 'https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6';
+
+// Attach error-fallback listeners to all [data-fallback] images in a container.
+// Using addEventListener (not onerror="...") keeps us CSP-compliant — inline
+// event handler attributes are treated as unsafe-inline by script-src.
+// data-fallback="" or "remove" → remove the img element (e.g. teaser posters)
+// data-fallback="<url>"       → replace src with that URL (e.g. episode artwork)
+function attachImageFallbacks(container) {
+  container.querySelectorAll('img[data-fallback]').forEach(function(img) {
+    function applyFallback() {
+      const fb = img.dataset.fallback;
+      if (!fb || fb === 'remove') {
+        img.remove();
+      } else {
+        img.src = fb;
+      }
+    }
+    // Handle images that already failed before this listener was attached
+    if (img.complete && !img.naturalWidth && img.getAttribute('src')) {
+      applyFallback();
+      return;
+    }
+    img.addEventListener('error', function onErr() {
+      img.removeEventListener('error', onErr);
+      applyFallback();
+    });
+  });
+}
+
 // Escape HTML to prevent XSS when injecting episode data into innerHTML
 function escapeHtml(str) {
   return String(str)
@@ -51,7 +81,7 @@ function buildEpisodeCard(ep) {
           src="${safeUrl(ep.artwork)}"
           alt="${escapeHtml(ep.title)}"
           loading="lazy"
-          onerror="this.src='https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6'"
+          data-fallback="${ARTWORK_FALLBACK}"
         >
       </div>
       <div class="episode-card-body">
@@ -82,8 +112,8 @@ function buildTeaserCard(next) {
   const art1 = next.artworks && safeUrl(next.artworks[0]) !== '#' ? next.artworks[0] : null;
   const art2 = next.artworks && safeUrl(next.artworks[1]) !== '#' ? next.artworks[1] : null;
 
-  const artImg1 = art1 ? `<img src="${art1}" alt="${escapeHtml(film1)} poster" class="teaser-film-poster" loading="lazy">` : '';
-  const artImg2 = art2 ? `<img src="${art2}" alt="${escapeHtml(film2)} poster" class="teaser-film-poster" loading="lazy">` : '';
+  const artImg1 = art1 ? `<img src="${art1}" alt="${escapeHtml(film1)} poster" class="teaser-film-poster" loading="lazy" data-fallback="remove">` : '';
+  const artImg2 = art2 ? `<img src="${art2}" alt="${escapeHtml(film2)} poster" class="teaser-film-poster" loading="lazy" data-fallback="remove">` : '';
 
   const badge = next.expectedDate
     ? `<span class="teaser-badge">Coming Soon · ${escapeHtml(next.expectedDate)}</span>`
@@ -120,6 +150,7 @@ const teaserSection = document.getElementById('nextEpisodeSection');
 const teaserContainer = document.getElementById('nextEpisodeTeaser');
 if (teaserSection && teaserContainer && typeof NEXT_EPISODE !== 'undefined' && NEXT_EPISODE) {
   teaserContainer.innerHTML = buildTeaserCard(NEXT_EPISODE);
+  attachImageFallbacks(teaserContainer);
   teaserSection.classList.add('is-visible');
 }
 
@@ -128,6 +159,7 @@ const latestContainer = document.getElementById('latestEpisodes');
 if (latestContainer && typeof EPISODES !== 'undefined') {
   const latest = EPISODES.slice(0, 6);
   latestContainer.innerHTML = latest.map(buildEpisodeCard).join('');
+  attachImageFallbacks(latestContainer);
   const allLink = document.getElementById('allEpisodesLink');
   if (allLink) allLink.textContent = `All ${EPISODES.length} episodes →`;
 }
@@ -136,6 +168,7 @@ if (latestContainer && typeof EPISODES !== 'undefined') {
 const allContainer = document.getElementById('allEpisodes');
 if (allContainer && typeof EPISODES !== 'undefined') {
   allContainer.innerHTML = EPISODES.map(buildEpisodeCard).join('');
+  attachImageFallbacks(allContainer);
   const countEl = document.getElementById('episodeCount');
   if (countEl) countEl.textContent = `${EPISODES.length} episodes`;
 
