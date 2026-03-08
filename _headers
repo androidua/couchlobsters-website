@@ -1,4 +1,7 @@
 /*
+  # Force HTTPS for 1 year — browsers will refuse HTTP connections after first visit
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
   # Prevent clickjacking — block site from being embedded in iframes
   X-Frame-Options: DENY
 
