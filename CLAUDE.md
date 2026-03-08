@@ -199,3 +199,75 @@ Before committing a **minor or major** version bump, always check:
 - [ ] Consider adding individual episode pages (optional — not planned yet)
 - [ ] Add host photos to About page when available
 - [ ] Update episode data whenever new episodes are published (or let GitHub Actions sync do it)
+
+---
+
+## SEO Standards
+
+Every page must maintain all of the following. Never add a page without them.
+
+### Required per-page tags
+- `<title>` — unique, descriptive, under ~60 characters
+- `<meta name="description">` — unique, 140–160 characters
+- `<link rel="canonical">` — full absolute URL
+- `<link rel="alternate" type="application/rss+xml">` — podcast RSS autodiscovery
+
+### Open Graph (all required)
+```html
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Couch Lobsters">
+<meta property="og:locale" content="en_AU">
+<meta property="og:url" content="https://couchlobsters.com/PAGE">
+<meta property="og:title" content="…">
+<meta property="og:description" content="…">
+<meta property="og:image" content="…">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="…">
+```
+
+### Twitter Card (all required)
+```html
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="…">
+<meta name="twitter:description" content="…">
+<meta name="twitter:image" content="…">
+```
+
+### JSON-LD structured data
+- `index.html`: `PodcastSeries` + `WebSite` in a `@graph`
+- `episodes.html`: `BreadcrumbList` (static) + `ItemList` of `PodcastEpisode` (injected by `main.js`)
+- `watching.html` / `about.html`: `BreadcrumbList` (+ `Person` × 2 on about)
+- `<script type="application/ld+json">` is CSP-exempt — no `script-src` changes needed
+
+### sitemap.xml
+All public pages must be listed with `<lastmod>` dates. Update `lastmod` whenever content on a page changes significantly. `watching.html` uses `changefreq="weekly"` (auto-synced from Sheets).
+
+### Links
+All external links must use `target="_blank" rel="noopener noreferrer"` — both attributes are required.
+
+---
+
+## Security Standards
+
+Security headers live in `_headers` (Cloudflare Pages format). Keep all of these present:
+
+| Header | Value | Purpose |
+|--------|-------|---------|
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` | Forces HTTPS (HSTS) |
+| `X-Frame-Options` | `DENY` | Blocks iframe embedding (legacy browsers) |
+| `X-Content-Type-Options` | `nosniff` | Prevents MIME-type sniffing |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Limits referrer leakage |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=()` | Locks down browser APIs |
+| `Content-Security-Policy` | See `_headers` for full allowlist | Controls allowed resource origins |
+| `frame-ancestors 'none'` | Part of CSP | Modern clickjacking prevention |
+
+### CSP rules
+- No `'unsafe-inline'` in `style-src` — use CSS classes (`.is-visible` pattern) instead of inline styles in JS
+- All new external image domains (e.g. TMDB posters, new CDNs) must be added to `img-src` in `_headers`
+- `<script type="application/ld+json">` is data, not a script — CSP-exempt
+
+### JS security practices (in `main.js`)
+- All data inserted via `innerHTML` must pass through `escapeHtml()` — prevents XSS
+- All URLs used in `href`/`src` attributes must pass through `safeUrl()` — prevents `javascript:` injection
+- These two helpers must remain in place whenever new card types or data sources are added
