@@ -20,6 +20,17 @@ const NEXT_EPISODE = {
 
 const EPISODES = [
   {
+    num: 26,
+    title: "The Big Lebowski (1998) VS Conclave (2024)",
+    date: "2026-03-08",
+    duration: "1h 47m",
+    artwork: "https://uploads.podcloud.fr/uploads/covers/ca/0f/ca0f7df1c26c36f2b2b366a62ee1226c03c7333e.jpg",
+    spotifyUrl: "",
+    appleUrl: "",
+    films: ["The Big Lebowski (1998)", "Conclave (2024)"]
+  },
+
+  {
     num: 25,
     title: "The Full Monty (1997) VS Charlie's Angels (2000)",
     date: "2025-12-13",
