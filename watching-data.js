@@ -8,5 +8,6 @@ var WATCHING = [
   {"title": "Mayhem (2017)", "who": "Jess", "type": "Film", "status": "Watched", "date": "2026-03", "notes": "Really fun B-series that takes blood soaked shots at corporate life. Love it."},
   {"title": "War Machine (2026)", "who": "Jess", "type": "Film", "status": "Watched", "date": "2026-03", "notes": "Don't they dare turn this into a franchise! Abort!"},
   {"title": "Shrinking S2", "who": "Dima", "type": "Series", "status": "Watching", "date": "2026-03", "notes": "Just a nice lite show to watch, esp if you only have 30min"},
-  {"title": "Double jeopardy (1999)", "who": "Jess", "type": "Film", "status": "Watched", "date": "2026-03", "notes": "Gosh I miss the nineties 😄"}
+  {"title": "Double jeopardy (1999)", "who": "Jess", "type": "Film", "status": "Watched", "date": "2026-03", "notes": "Gosh I miss the nineties 😄"},
+  {"title": "Scary Movie 2", "who": "Dima", "type": "Film", "status": "Watched", "date": "2026-03", "notes": "This is classic! Love the stupid jokes"}
 ];
