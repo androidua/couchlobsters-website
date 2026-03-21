@@ -12,6 +12,6 @@ var WATCHING = [
   {"title": "Scary Movie 2", "who": "Dima", "type": "Film", "status": "Watched", "date": "2026-03", "notes": "This is classic! Love the stupid jokes"},
   {"title": "Derry girls (2018-2022)", "who": "Jess", "type": "Series", "status": "Watched", "date": "2026-03", "notes": "Cannot recommend this show enough. Available on Netflix. Go binge it!"},
   {"title": "One Piece", "who": "Dima", "type": "Series", "status": "Watching", "date": "2026-03", "notes": "Not as good as anime but good enought ;)"},
-  {"title": "One Piece S02 (2026)", "who": "Jess", "type": "Series", "status": "Watching", "date": "2026-03", "notes": "I just love this show with all my heart! ❤️ I love the adventures, the whimsical characters, the universe, the morals… It ticks all of the boxes!!"},
-  {"title": "Deadloch S02 (2026)", "who": "Jess", "type": "Series", "status": "Watching", "date": "2026-03", "notes": "Excellent Australian crime comedy series. I've been waiting for season 2 for what feels like forever. It's such a good show!"}
+  {"title": "One Piece S02 (2026)", "who": "Jess", "type": "Series", "status": "Watched", "date": "2026-03", "notes": "I just love this show with all my heart! ❤️ I love the adventures, the whimsical characters, the universe, the morals… It ticks all of the boxes!!"},
+  {"title": "Deadloch S02 (2026)", "who": "Jess", "type": "Series", "status": "Watched", "date": "2026-03", "notes": "Excellent Australian crime comedy series. I've been waiting for season 2 for what feels like forever. It's such a good show!"}
 ];
