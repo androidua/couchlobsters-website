@@ -191,9 +191,6 @@ Before committing a **minor or major** version bump, always check:
 
 ## Things Still To Do
 
-- [x] Connect couchlobsters.com custom domain to Cloudflare Pages project ✓
-- [x] Add favicon ✓ (self-hosted favicon.jpg + favicon.ico for Safari)
-- [x] What We're Watching page with Google Sheets sync ✓
 - [ ] Consider adding individual episode pages (optional — not planned yet)
 - [ ] Add host photos to About page when available
 - [ ] Update episode data whenever new episodes are published (or let GitHub Actions sync do it)
