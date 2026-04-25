@@ -25,8 +25,9 @@ if (navToggle && navLinks) {
   });
 }
 
-// Podcast cover used as fallback when episode artwork fails to load
-const ARTWORK_FALLBACK = 'https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6';
+// Podcast cover used as fallback when episode artwork fails to load.
+// Self-hosted so it doesn't depend on Spotify CDN availability.
+const ARTWORK_FALLBACK = 'https://couchlobsters.com/favicon.jpg';
 
 // Attach error-fallback listeners to all [data-fallback] images in a container.
 // Using addEventListener (not onerror="...") keeps us CSP-compliant — inline
@@ -40,6 +41,7 @@ function attachImageFallbacks(container) {
       if (!fb || fb === 'remove') {
         img.remove();
       } else {
+        img.addEventListener('error', function() { img.remove(); }, { once: true });
         img.src = fb;
       }
     }
@@ -51,7 +53,7 @@ function attachImageFallbacks(container) {
     img.addEventListener('error', function onErr() {
       img.removeEventListener('error', onErr);
       applyFallback();
-    });
+    }, { once: true });
   });
 }
 
@@ -108,7 +110,8 @@ function buildEpisodeCard(ep) {
 
 // Build the next-episode teaser card
 function buildTeaserCard(next) {
-  const [film1, film2] = next.films;
+  const film1 = next.films[0] || '';
+  const film2 = next.films[1] || '';
   const art1 = next.artworks && safeUrl(next.artworks[0]) !== '#' ? next.artworks[0] : null;
   const art2 = next.artworks && safeUrl(next.artworks[1]) !== '#' ? next.artworks[1] : null;
 
@@ -214,7 +217,8 @@ function formatWatchDate(dateStr) {
   if (parts.length < 2) return dateStr;
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const idx = parseInt(parts[1], 10) - 1;
-  return `${months[idx] || ''} ${parts[0]}`;
+  if (idx < 0 || idx > 11 || isNaN(idx)) return dateStr;
+  return `${months[idx]} ${parts[0]}`;
 }
 
 // Build a single watch card (used on both homepage teaser and full page)

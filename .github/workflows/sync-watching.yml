@@ -66,5 +66,6 @@ jobs:
           git diff --quiet watching-data.js || (
             git add watching-data.js &&
             git commit -m "chore: sync watching data ($(date -u '+%Y-%m-%d %H:%M UTC'))" &&
+            git pull --rebase origin main &&
             git push
           )

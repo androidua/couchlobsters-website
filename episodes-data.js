@@ -25,8 +25,8 @@ const EPISODES = [
     date: "2026-03-08",
     duration: "1h 47m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/ca/0f/ca0f7df1c26c36f2b2b366a62ee1226c03c7333e.jpg",
-    spotifyUrl: "",
-    appleUrl: "",
+    spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
+    appleUrl: "https://podcasts.apple.com/au/podcast/the-big-lebowski-1998-vs-conclave-2024/id1681472927?i=1000753872205",
     films: ["The Big Lebowski (1998)", "Conclave (2024)"]
   },
 
@@ -282,8 +282,9 @@ const EPISODES = [
   }
 ];
 
-// Format date nicely
+// Format date nicely. Split manually to avoid UTC-midnight off-by-one when
+// ISO strings are parsed as UTC but displayed in the visitor's local timezone.
 function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
 }
