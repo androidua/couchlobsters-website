@@ -17,6 +17,8 @@ jobs:
       - name: Fetch CSV from Google Sheets
         run: |
           curl --fail -sL \
+            --max-time 30 \
+            --retry 3 --retry-delay 15 --retry-all-errors \
             "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXcTB0MsHrHcdx3zaoBa9HrVzt_Uc1ZpvhF1vGQECJ_3GF0KteGkOV_GXYGToMGizN0YfB_zbXBwBE/pub?gid=0&single=true&output=csv" \
             -o /tmp/watching.csv
 
