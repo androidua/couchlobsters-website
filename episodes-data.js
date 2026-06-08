@@ -20,6 +20,17 @@ const NEXT_EPISODE = {
 
 const EPISODES = [
   {
+    num: 27,
+    title: "Goodbye Lenin (2003) VS Highlander (1986)",
+    date: "2026-06-07",
+    duration: "1h 24m",
+    artwork: "https://uploads.podcloud.fr/uploads/covers/5e/21/5e21806a851e3157cb3e487d70fd797eb16e9fb0.jpg",
+    spotifyUrl: "",
+    appleUrl: "",
+    films: ["Goodbye Lenin (2003)", "Highlander (1986)"]
+  },
+
+  {
     num: 26,
     title: "The Big Lebowski (1998) VS Conclave (2024)",
     date: "2026-03-08",
