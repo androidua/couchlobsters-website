@@ -21,18 +21,25 @@ Jess & Dima. Built as plain HTML/CSS/JS (no frameworks, no build step required).
 
 ```
 couchlobsters-website/
-├── index.html          ← Homepage (hero, concept, latest episodes, platform links, next episode teaser)
+├── index.html          ← Homepage (hero, concept, latest episodes, platform links, upcoming episode teasers)
 ├── episodes.html       ← All episodes page (full grid of all episodes)
 ├── watching.html       ← What We're Watching page (filterable grid: status × person × year)
 ├── about.html          ← About page (show description + host bios)
 ├── style.css           ← All styles (dark cinematic theme, gold accent #e8c96d)
-├── episodes-data.js    ← Episode data array + NEXT_EPISODE teaser config
+├── episodes-data.js    ← Episode data array + UPCOMING_EPISODES teaser config (data only — no functions)
 ├── watching-data.js    ← Watching picks — auto-generated from Google Sheets (do not edit manually)
-├── main.js             ← Nav toggle + episode card rendering + watching page logic
+├── main.js             ← Nav toggle + episode/teaser card rendering + watching page logic + all helpers
+├── logo.jpg            ← Self-hosted podcast logo (640×640 JPEG) — nav/hero/footer images + og:image on all pages
 ├── favicon.jpg         ← Self-hosted podcast logo (300×300 JPEG) — used as <link rel="icon"> on all pages
 ├── favicon.ico         ← ICO binary (16×16 + 64×64 PNG) — required for Safari's /favicon.ico domain lookup
+├── robots.txt          ← Allow all + sitemap pointer
+├── sitemap.xml         ← All 4 pages with <lastmod> (episode sync auto-refreshes / and /episodes.html)
 ├── _headers            ← Cloudflare Pages security headers (CSP, X-Frame-Options, etc.)
-├── .github/workflows/sync-watching.yml  ← Hourly GitHub Action: Google Sheets CSV → watching-data.js
+├── .github/workflows/sync-watching.yml  ← 6-hourly GitHub Action: Google Sheets CSV → watching-data.js
+├── .github/workflows/sync-episodes.yml  ← Daily GitHub Action: RSS → episodes-data.js + follow-up issue
+├── .github/workflows/validate.yml       ← CI guardrail: validates data files + HTML invariants on every push
+├── .github/scripts/sync_episodes.py     ← RSS parser (fills Apple links via iTunes API, updates sitemap)
+├── .github/scripts/validate.js          ← Validation script shared by CI and both sync workflows
 └── CLAUDE.md           ← This file
 ```
 
@@ -43,17 +50,26 @@ couchlobsters-website/
 - **No build tools.** Pure HTML, CSS, JavaScript. No npm, no webpack, nothing to install.
 - **Episodes are data-driven.** All episode info lives in `episodes-data.js` as a JS array called `EPISODES`.
   Both `index.html` (shows latest 6 on desktop, 4 on mobile) and `episodes.html` (shows all) pull from this same array.
-- **Next Episode teaser** is driven by `NEXT_EPISODE` in `episodes-data.js`. Set to `null` to hide the section.
+- **Upcoming-episode teasers** are driven by the `UPCOMING_EPISODES` array in `episodes-data.js` (one card per
+  entry; `status: "recorded"` shows a "✳ Recorded · Releasing Soon" badge). Set to `[]` to hide the section.
+- **Episodes auto-sync daily.** `.github/workflows/sync-episodes.yml` fetches the RSS feed, prepends new episodes
+  to `EPISODES`, fills per-episode Apple links via the iTunes Lookup API, refreshes sitemap `lastmod`, and opens
+  a GitHub issue listing the remaining manual steps (Spotify per-episode link, teaser update). Spotify episode
+  URLs are NOT available via any unauthenticated API — new episodes get the show URL until pasted manually.
 - **Episode artwork** is hotlinked directly from the podcast RSS feed CDN (podcloud.fr).
 - **What We're Watching** is a filterable page (`watching.html`) showing picks by Jess & Dima.
   Data lives in `watching-data.js` (auto-generated — do not edit manually).
   Managed via Google Sheets; a GitHub Actions workflow (`.github/workflows/sync-watching.yml`) fetches the sheet
-  as CSV hourly and commits `watching-data.js` only when content has changed.
+  as CSV every 6 hours and commits `watching-data.js` only when content has changed.
   Uses `var WATCHING` (not `const`) — Safari scopes top-level `const` to the declaring script; `var` attaches
   to `window` and is visible across all script tags. Do not change to `const`.
-- **Favicon** is self-hosted: `favicon.jpg` (used via `<link rel="icon">` on all pages) + `favicon.ico` (binary
-  ICO in repo root — Safari auto-requests `/favicon.ico` for root-domain URLs; without this file Cloudflare Pages
-  serves `index.html` instead, causing the tab icon to fall back to a letter).
+- **CI validation** (`.github/workflows/validate.yml` → `.github/scripts/validate.js`) runs on every push and
+  inside both sync workflows before committing: JS syntax, episode/watching data shape, https-only URLs,
+  no bare `rel="noopener"`, no inline `onerror=`, no hardcoded episode counts, sitemap well-formedness.
+- **Brand images are self-hosted**: `logo.jpg` (640×640, nav/hero/footer + og:image), `favicon.jpg` (300×300,
+  `<link rel="icon">` on all pages) + `favicon.ico` (binary ICO in repo root — Safari auto-requests
+  `/favicon.ico` for root-domain URLs; without this file Cloudflare Pages serves `index.html` instead, causing
+  the tab icon to fall back to a letter). Never hotlink brand images from the Spotify CDN — those URLs rotate.
 - **Fonts** are loaded from Google Fonts: Bebas Neue (display), DM Sans (body), Playfair Display (italic accents).
 - **Security headers** are set in `_headers` (Cloudflare Pages format). CSP allowlists Cloudflare Insights, Google Fonts, and podcast image CDNs.
 
@@ -82,7 +98,7 @@ couchlobsters-website/
 - **Format:** Each episode, they assign each other a film or TV series to watch.
   Opinions are kept secret until recording day. Full spoilers throughout.
 - **Tagline:** "The film & series podcast made by amateurs for cinema enthusiasts."
-- **Episodes:** 25 published (as of March 2026), released roughly every 4–8 weeks
+- **Episodes:** 27 published (as of July 2026), released roughly every 4–8 weeks — live count is always `EPISODES.length`
 - **Based in:** Australia
 
 ### Platform Links
@@ -102,26 +118,36 @@ couchlobsters-website/
 
 ---
 
-## How to Update the Next Episode Teaser
+## How to Update the Upcoming Episode Teasers
 
-The teaser is the "Coming Soon" card on the homepage. It lives at the top of `episodes-data.js`.
+The homepage "Next Episode" section renders one card per entry of the `UPCOMING_EPISODES`
+array at the top of `episodes-data.js` (two cards sit side by side on desktop).
 
-**The user only needs to say:** the two film names (with years) and an expected date.
+**The user only needs to say:** the two film names (with years), plus whether the episode is
+already recorded or still to be recorded (and an expected/recording date if known).
 Claude should handle everything else — finding artwork URLs from TMDB and updating the file.
 
 ```javascript
-const NEXT_EPISODE = {
-  films: ["Film A (year)", "Film B (year)"],   // shown as "VS" on the card
-  artworks: [
-    "https://...",   // poster for Film A — use TMDB: https://www.themoviedb.org/
-    "https://..."    // poster for Film B — use TMDB URL format: https://media.themoviedb.org/t/p/w500/POSTER_PATH.jpg
-  ],
-  teaser: null,           // optional one-line tagline e.g. "Two classics. One winner." — or null
-  expectedDate: "April 2026"  // free-form string shown on the card — or null to omit
-};
+const UPCOMING_EPISODES = [
+  {
+    films: ["Film A (year)", "Film B (year)"],   // shown as "A VS B" on the card
+    artworks: [
+      "https://...",   // poster for Film A — use TMDB: https://www.themoviedb.org/
+      "https://..."    // poster for Film B — TMDB URL format: https://media.themoviedb.org/t/p/w500/POSTER_PATH.jpg
+    ],
+    status: "recorded",       // "recorded" → "✳ Recorded · Releasing Soon" badge
+                              // "scheduled" → "Coming Soon" badge (+ expectedDate if set)
+    label: "Next Episode",    // optional card label; defaults to "Next Episode"
+    teaser: null,             // optional one-line tagline e.g. "Two classics. One winner." — or null
+    expectedDate: null        // free-form string e.g. "Recording 11 July" — or null to omit
+  }
+];
 ```
 
-**To hide the teaser entirely** (e.g. between seasons): set `NEXT_EPISODE = null`.
+**When an episode is published:** remove its entry from `UPCOMING_EPISODES` (the daily
+episode sync adds it to `EPISODES` automatically, and the sync's follow-up issue reminds you).
+
+**To hide the section entirely** (e.g. between seasons): set `UPCOMING_EPISODES = []`.
 
 **TMDB poster URL pattern:** `https://media.themoviedb.org/t/p/w500/POSTER_PATH.jpg`
 Find it by searching the film on https://www.themoviedb.org/ and copying the poster path from the image URL.
@@ -130,7 +156,11 @@ Find it by searching the film on https://www.themoviedb.org/ and copying the pos
 
 ## How to Add a New Episode
 
-When a new episode is published, add it to the **top** of the `EPISODES` array
+**Normally automatic.** The daily `sync-episodes.yml` workflow adds new episodes from the
+RSS feed (including Apple links and sitemap updates) and opens a follow-up issue for the
+two remaining manual steps: the Spotify per-episode link and the `UPCOMING_EPISODES` cleanup.
+
+To add one manually (or fix a synced entry), edit the **top** of the `EPISODES` array
 in `episodes-data.js`. Each episode object looks like this:
 
 ```javascript
@@ -177,7 +207,7 @@ Semantic versioning — bump in README badge + git tag in same commit:
 git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
-Current version: **v1.3.3**
+Current version: **v1.4.0**
 
 ### Pre-commit README checklist (minor and major bumps)
 
@@ -193,7 +223,8 @@ Before committing a **minor or major** version bump, always check:
 
 - [ ] Consider adding individual episode pages (optional — not planned yet)
 - [ ] Add host photos to About page when available
-- [ ] Update episode data whenever new episodes are published (or let GitHub Actions sync do it)
+- [ ] Paste per-episode Spotify links for the 14 older episodes still using the show URL
+      (not fetchable without authenticated Spotify API access; list in the v1.4.0 commit message)
 
 ---
 
@@ -223,11 +254,13 @@ Every page must maintain all of the following. Never add a page without them.
 
 ### Twitter Card (all required)
 ```html
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="…">
 <meta name="twitter:description" content="…">
 <meta name="twitter:image" content="…">
 ```
+`summary` (not `summary_large_image`) — the share image is the square 640×640 logo;
+the large card format expects 2:1 landscape art and would crop it badly.
 
 ### JSON-LD structured data
 - `index.html`: `PodcastSeries` + `WebSite` in a `@graph`
@@ -270,4 +303,4 @@ Security headers live in `_headers` (Cloudflare Pages format). Keep all of these
 - After every `innerHTML` assignment on a container with images, call `attachImageFallbacks(container)`
   - Images that should fall back to the podcast cover: add `data-fallback="${ARTWORK_FALLBACK}"` to the `<img>` tag
   - Images that should be removed on failure (e.g. teaser posters): add `data-fallback="remove"`
-  - `ARTWORK_FALLBACK` constant at top of `main.js` holds the Spotify CDN podcast cover URL
+  - `ARTWORK_FALLBACK` constant at top of `main.js` holds the self-hosted podcast cover URL (`logo.jpg`)

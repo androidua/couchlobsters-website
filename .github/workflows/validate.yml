@@ -1,0 +1,23 @@
+name: Validate site data
+
+# Guardrail: every push (human or bot) must keep the data files and HTML
+# invariants intact. The sync workflows also run the same script before
+# committing, so bad data can never reach main unnoticed.
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Syntax-check JS files
+        run: |
+          node --check episodes-data.js
+          node --check watching-data.js
+          node --check main.js
+
+      - name: Validate data files and HTML invariants
+        run: node .github/scripts/validate.js

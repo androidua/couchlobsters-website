@@ -18,6 +18,6 @@
   # - Scripts: self + Cloudflare Insights (auto-injected by Cloudflare Pages)
   # - Styles: self + Google Fonts
   # - Fonts: Google Fonts CDN
-  # - Images: self + podcast CDNs (Spotify, podcloud.fr) + data URIs
+  # - Images: self (logo, favicon) + episode/poster CDNs (podcloud.fr, TMDB) + data URIs
   # - Connections: self + Cloudflare Insights beacon reporting
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.scdn.co https://uploads.podcloud.fr https://media.themoviedb.org https://image.tmdb.org; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://uploads.podcloud.fr https://media.themoviedb.org https://image.tmdb.org; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'

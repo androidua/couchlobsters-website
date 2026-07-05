@@ -7,27 +7,33 @@ const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 
 if (navToggle && navLinks) {
+  const setNavOpen = (open) => {
+    navLinks.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+  };
+  navToggle.setAttribute('aria-expanded', 'false');
+
   navToggle.addEventListener('click', (e) => {
     e.stopPropagation();
-    navLinks.classList.toggle('open');
+    setNavOpen(!navLinks.classList.contains('open'));
   });
 
   // Close nav when a link is clicked
   navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
+    link.addEventListener('click', () => setNavOpen(false));
   });
 
   // Close nav when clicking outside
   document.addEventListener('click', (e) => {
     if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
-      navLinks.classList.remove('open');
+      setNavOpen(false);
     }
   });
 }
 
 // Podcast cover used as fallback when episode artwork fails to load.
 // Self-hosted so it doesn't depend on Spotify CDN availability.
-const ARTWORK_FALLBACK = 'https://couchlobsters.com/favicon.jpg';
+const ARTWORK_FALLBACK = 'https://couchlobsters.com/logo.jpg';
 
 // Attach error-fallback listeners to all [data-fallback] images in a container.
 // Using addEventListener (not onerror="...") keeps us CSP-compliant — inline
@@ -70,6 +76,22 @@ function escapeHtml(str) {
 // Validate URLs — only allow https:// to prevent javascript: injection
 function safeUrl(url) {
   return typeof url === 'string' && url.startsWith('https://') ? url : '#';
+}
+
+// Format "2026-06-07" → "7 June 2026". Split manually to avoid UTC-midnight
+// off-by-one when ISO strings are parsed as UTC but displayed in the visitor's
+// local timezone.
+function formatDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// Convert "1h 24m" / "45m" → ISO 8601 duration ("PT1H24M") for schema.org
+function isoDuration(str) {
+  const h = /(\d+)\s*h/.exec(str || '');
+  const m = /(\d+)\s*m/.exec(str || '');
+  if (!h && !m) return undefined;
+  return 'PT' + (h ? h[1] + 'H' : '') + (m ? m[1] + 'M' : '');
 }
 
 // Episode card builder
@@ -118,9 +140,12 @@ function buildTeaserCard(next) {
   const artImg1 = art1 ? `<img src="${art1}" alt="${escapeHtml(film1)} poster" class="teaser-film-poster" loading="lazy" data-fallback="remove">` : '';
   const artImg2 = art2 ? `<img src="${art2}" alt="${escapeHtml(film2)} poster" class="teaser-film-poster" loading="lazy" data-fallback="remove">` : '';
 
-  const badge = next.expectedDate
-    ? `<span class="teaser-badge">Coming Soon · ${escapeHtml(next.expectedDate)}</span>`
-    : `<span class="teaser-badge">Coming Soon</span>`;
+  // "recorded" = in the can, awaiting release; anything else = still to be made
+  const recorded = next.status === 'recorded';
+  const badgeText = recorded
+    ? '✳ Recorded · Releasing Soon'
+    : (next.expectedDate ? `Coming Soon · ${escapeHtml(next.expectedDate)}` : 'Coming Soon');
+  const badge = `<span class="teaser-badge${recorded ? ' teaser-badge--soon' : ''}">${badgeText}</span>`;
 
   const tagline = next.teaser
     ? `<p class="teaser-tagline">"${escapeHtml(next.teaser)}"</p>`
@@ -129,7 +154,7 @@ function buildTeaserCard(next) {
   return `
     <div class="teaser-card">
       <div class="teaser-header">
-        <span class="teaser-label">◆ Next Episode</span>
+        <span class="teaser-label">◆ ${escapeHtml(next.label || 'Next Episode')}</span>
         ${badge}
       </div>
       <div class="teaser-films">
@@ -148,11 +173,13 @@ function buildTeaserCard(next) {
   `;
 }
 
-// Render next episode teaser on homepage
+// Render upcoming-episode teaser cards on homepage
 const teaserSection = document.getElementById('nextEpisodeSection');
 const teaserContainer = document.getElementById('nextEpisodeTeaser');
-if (teaserSection && teaserContainer && typeof NEXT_EPISODE !== 'undefined' && NEXT_EPISODE) {
-  teaserContainer.innerHTML = buildTeaserCard(NEXT_EPISODE);
+if (teaserSection && teaserContainer &&
+    typeof UPCOMING_EPISODES !== 'undefined' &&
+    Array.isArray(UPCOMING_EPISODES) && UPCOMING_EPISODES.length > 0) {
+  teaserContainer.innerHTML = UPCOMING_EPISODES.map(buildTeaserCard).join('');
   attachImageFallbacks(teaserContainer);
   teaserSection.classList.add('is-visible');
 }
@@ -188,9 +215,13 @@ if (allContainer && typeof EPISODES !== 'undefined') {
       'item': {
         '@type': 'PodcastEpisode',
         'name': ep.title,
-        'url': ep.spotifyUrl,
+        // Only per-episode URLs are useful here; generic show links fall back
+        // to the episodes page so the ItemList doesn't repeat one URL.
+        'url': ep.spotifyUrl && ep.spotifyUrl.includes('/episode/')
+          ? ep.spotifyUrl
+          : 'https://couchlobsters.com/episodes.html',
         'datePublished': ep.date,
-        'timeRequired': ep.duration,
+        'timeRequired': isoDuration(ep.duration),
         'image': ep.artwork,
         'partOfSeries': {
           '@type': 'PodcastSeries',
@@ -299,8 +330,8 @@ if (watchGridEl && typeof WATCHING !== 'undefined') {
       const yearGroupEl = document.getElementById('yearFilters');
       if (yearGroupEl) {
         yearGroupEl.innerHTML =
-          '<button class="watch-filter-btn active" data-filter-year="all">All</button>' +
-          years.map(y => `<button class="watch-filter-btn" data-filter-year="${escapeHtml(y)}">${escapeHtml(y)}</button>`).join('');
+          '<button class="watch-filter-btn active" data-filter-year="all" aria-pressed="true">All</button>' +
+          years.map(y => `<button class="watch-filter-btn" data-filter-year="${escapeHtml(y)}" aria-pressed="false">${escapeHtml(y)}</button>`).join('');
       }
       yearWrapperEl.classList.add('is-visible');
     }
@@ -324,12 +355,21 @@ if (watchGridEl && typeof WATCHING !== 'undefined') {
     }
   }
 
+  // Mark one button in a group as active (visual class + aria-pressed state)
+  function selectFilterBtn(groupSelector, btn) {
+    document.querySelectorAll(groupSelector).forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+  }
+
   // Wire status filter buttons
   document.querySelectorAll('[data-filter-status]').forEach(btn => {
     btn.addEventListener('click', () => {
       activeStatus = btn.dataset.filterStatus;
-      document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      selectFilterBtn('[data-filter-status]', btn);
       renderWatchGrid();
     });
   });
@@ -338,8 +378,7 @@ if (watchGridEl && typeof WATCHING !== 'undefined') {
   document.querySelectorAll('[data-filter-person]').forEach(btn => {
     btn.addEventListener('click', () => {
       activePerson = btn.dataset.filterPerson;
-      document.querySelectorAll('[data-filter-person]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      selectFilterBtn('[data-filter-person]', btn);
       renderWatchGrid();
     });
   });
@@ -348,8 +387,7 @@ if (watchGridEl && typeof WATCHING !== 'undefined') {
   document.querySelectorAll('[data-filter-year]').forEach(btn => {
     btn.addEventListener('click', () => {
       activeYear = btn.dataset.filterYear;
-      document.querySelectorAll('[data-filter-year]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      selectFilterBtn('[data-filter-year]', btn);
       renderWatchGrid();
     });
   });

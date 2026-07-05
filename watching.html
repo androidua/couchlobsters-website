@@ -14,16 +14,16 @@
   <meta property="og:url" content="https://couchlobsters.com/watching.html">
   <meta property="og:title" content="What We're Watching — Couch Lobsters">
   <meta property="og:description" content="What Jess & Dima are watching right now, what they've finished, and what's on their list.">
-  <meta property="og:image" content="https://couchlobsters.com/favicon.jpg">
-  <meta property="og:image:width" content="300">
-  <meta property="og:image:height" content="300">
+  <meta property="og:image" content="https://couchlobsters.com/logo.jpg">
+  <meta property="og:image:width" content="640">
+  <meta property="og:image:height" content="640">
   <meta property="og:image:alt" content="Couch Lobsters podcast logo">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="What We're Watching — Couch Lobsters">
   <meta name="twitter:description" content="What Jess & Dima are watching right now, what they've finished, and what's on their list.">
-  <meta name="twitter:image" content="https://couchlobsters.com/favicon.jpg">
+  <meta name="twitter:image" content="https://couchlobsters.com/logo.jpg">
 
   <!-- RSS Feed -->
   <link rel="alternate" type="application/rss+xml" title="Couch Lobsters Podcast" href="https://couch-lobsters.lepodcast.fr/rss">
@@ -50,7 +50,6 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://i.scdn.co">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
@@ -63,7 +62,7 @@
   <!-- NAV -->
   <nav class="nav">
     <a href="index.html" class="nav-logo">
-      <img src="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6" alt="Couch Lobsters" class="nav-logo-img" width="640" height="640">
+      <img src="logo.jpg" alt="Couch Lobsters" class="nav-logo-img" width="640" height="640">
       <span class="nav-logo-text">Couch Lobsters</span>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -97,16 +96,16 @@
       <!-- Filter bar -->
       <div class="watch-filters" role="group" aria-label="Filter picks">
         <div class="watch-filter-group" aria-label="Filter by status">
-          <button class="watch-filter-btn active" data-filter-status="all">All</button>
-          <button class="watch-filter-btn" data-filter-status="Watching">Watching</button>
-          <button class="watch-filter-btn" data-filter-status="Watched">Watched</button>
-          <button class="watch-filter-btn" data-filter-status="Want to Watch">Want to Watch</button>
+          <button class="watch-filter-btn active" data-filter-status="all" aria-pressed="true">All</button>
+          <button class="watch-filter-btn" data-filter-status="Watching" aria-pressed="false">Watching</button>
+          <button class="watch-filter-btn" data-filter-status="Watched" aria-pressed="false">Watched</button>
+          <button class="watch-filter-btn" data-filter-status="Want to Watch" aria-pressed="false">Want to Watch</button>
         </div>
         <div class="watch-filter-divider" aria-hidden="true"></div>
         <div class="watch-filter-group" aria-label="Filter by person">
-          <button class="watch-filter-btn active" data-filter-person="all">All</button>
-          <button class="watch-filter-btn" data-filter-person="Jess">Jess</button>
-          <button class="watch-filter-btn" data-filter-person="Dima">Dima</button>
+          <button class="watch-filter-btn active" data-filter-person="all" aria-pressed="true">All</button>
+          <button class="watch-filter-btn" data-filter-person="Jess" aria-pressed="false">Jess</button>
+          <button class="watch-filter-btn" data-filter-person="Dima" aria-pressed="false">Dima</button>
         </div>
         <!-- Year filter: hidden by default; JS reveals and populates it when 2+ distinct years exist -->
         <div class="watch-filter-year-wrapper" id="yearFilterWrapper">
@@ -128,7 +127,7 @@
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <img src="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6" alt="Couch Lobsters" class="footer-logo" width="640" height="640" loading="lazy">
+          <img src="logo.jpg" alt="Couch Lobsters" class="footer-logo" width="640" height="640" loading="lazy">
           <p>The film &amp; series podcast made by<br>amateurs for cinema enthusiasts.</p>
         </div>
         <div class="footer-links">

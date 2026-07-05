@@ -8,7 +8,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # needed to commit and push episodes-data.js
+  contents: write   # commit and push episodes-data.js + sitemap.xml
+  issues: write     # open the manual-follow-ups issue for new episodes
 
 jobs:
   sync:
@@ -29,15 +30,45 @@ jobs:
       - name: Fetch RSS and update episode data
         run: python .github/scripts/sync_episodes.py
 
+      - name: Validate before committing
+        run: node .github/scripts/validate.js
+
       - name: Commit and push if new episodes were added
+        id: commit
         run: |
-          if git diff --quiet episodes-data.js; then
-            echo "episodes-data.js unchanged — nothing to commit."
+          if git diff --quiet episodes-data.js sitemap.xml; then
+            echo "No changes — nothing to commit."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
             git config user.name  "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add episodes-data.js
+            git add episodes-data.js sitemap.xml
             git commit -m "chore: auto-sync new episode(s) from RSS feed"
+            git pull --rebase origin main
             git push
-            echo "Pushed updated episodes-data.js — Cloudflare Pages will deploy shortly."
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+            echo "Pushed updated episode data — Cloudflare Pages will deploy shortly."
           fi
+
+      - name: Open follow-up issue for the new episode(s)
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "New episode auto-synced — manual follow-ups needed" \
+            --body "$(cat <<'EOF'
+          The daily RSS sync just added new episode(s) to episodes-data.js.
+
+          Automated already: episode entry, Apple Podcasts per-episode link
+          (via iTunes API), sitemap lastmod dates.
+
+          Still manual:
+          - [ ] Replace the Spotify show-URL stopgap with the per-episode link
+                (not available via any unauthenticated API)
+          - [ ] Update UPCOMING_EPISODES in episodes-data.js (remove the
+                now-published entry / add the next one)
+
+          Close this issue once both are done and pushed.
+          EOF
+          )"

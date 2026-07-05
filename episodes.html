@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Episodes — Couch Lobsters Podcast</title>
-  <meta name="description" content="All 26 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes. Listen on Spotify and Apple Podcasts.">
+  <meta name="description" content="All episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes. Listen on Spotify and Apple Podcasts.">
   <link rel="canonical" href="https://couchlobsters.com/episodes.html">
 
   <!-- Open Graph -->
@@ -13,17 +13,17 @@
   <meta property="og:locale" content="en_AU">
   <meta property="og:url" content="https://couchlobsters.com/episodes.html">
   <meta property="og:title" content="Episodes — Couch Lobsters Podcast">
-  <meta property="og:description" content="All 26 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
-  <meta property="og:image" content="https://couchlobsters.com/favicon.jpg">
-  <meta property="og:image:width" content="300">
-  <meta property="og:image:height" content="300">
+  <meta property="og:description" content="All episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
+  <meta property="og:image" content="https://couchlobsters.com/logo.jpg">
+  <meta property="og:image:width" content="640">
+  <meta property="og:image:height" content="640">
   <meta property="og:image:alt" content="Couch Lobsters podcast logo">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Episodes — Couch Lobsters Podcast">
-  <meta name="twitter:description" content="All 25 episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
-  <meta name="twitter:image" content="https://couchlobsters.com/favicon.jpg">
+  <meta name="twitter:description" content="All episodes of Couch Lobsters — the film & series podcast by Jess & Dima. Movies, TV series, spoilers, and honest takes.">
+  <meta name="twitter:image" content="https://couchlobsters.com/logo.jpg">
 
   <!-- RSS Feed -->
   <link rel="alternate" type="application/rss+xml" title="Couch Lobsters Podcast" href="https://couch-lobsters.lepodcast.fr/rss">
@@ -50,7 +50,6 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://i.scdn.co">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
@@ -63,7 +62,7 @@
   <!-- NAV -->
   <nav class="nav">
     <a href="index.html" class="nav-logo">
-      <img src="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6" alt="Couch Lobsters" class="nav-logo-img" width="640" height="640">
+      <img src="logo.jpg" alt="Couch Lobsters" class="nav-logo-img" width="640" height="640">
       <span class="nav-logo-text">Couch Lobsters</span>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -81,7 +80,7 @@
   <section class="episodes-page">
     <div class="container">
       <h1 class="page-title">All <em>Episodes</em></h1>
-      <p class="episodes-count" id="episodeCount">25 episodes</p>
+      <p class="episodes-count" id="episodeCount">Loading episodes…</p>
       <div class="episodes-grid" id="allEpisodes">
         <!-- Populated by JS -->
       </div>
@@ -100,7 +99,7 @@
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <img src="https://i.scdn.co/image/ab67656300005f1f898fffb9a93ea6da74e342d6" alt="Couch Lobsters" class="footer-logo" width="640" height="640" loading="lazy">
+          <img src="logo.jpg" alt="Couch Lobsters" class="footer-logo" width="640" height="640" loading="lazy">
           <p>The film &amp; series podcast made by<br>amateurs for cinema enthusiasts.</p>
         </div>
         <div class="footer-links">

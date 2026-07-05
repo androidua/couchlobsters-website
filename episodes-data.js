@@ -1,21 +1,41 @@
 // All Couch Lobsters episodes — sourced from RSS feed
 // Episodes listed newest first (add new episodes to the TOP of this array)
-// Episodes numbered 1–25, matching the RSS feed
+// Episode numbers match the itunes:episode tags in the RSS feed
 
-// ── Next Episode Teaser ───────────────────────────────────────────────────────
-// Set to null to hide the teaser section entirely.
-// artworks: add poster/artwork URLs when available; leave null for styled placeholders.
-// teaser:   optional one-line tagline shown below the card.
-// expectedDate: optional string e.g. "April 2026".
-const NEXT_EPISODE = {
-  films: ["Argo (2012)", "Brotherhood of the Wolf (2001)"],
-  artworks: [
-    "https://media.themoviedb.org/t/p/w500/m5gPWFZFIp4UJFABgWyLkbXv8GX.jpg",
-    "https://media.themoviedb.org/t/p/w500/Ahd4F7azhjsxgXYjVyFmVzJu9LB.jpg"
-  ],
-  teaser: null,
-  expectedDate: "April 2026"
-};
+// ── Upcoming Episodes ─────────────────────────────────────────────────────────
+// Rendered as teaser cards in the "Next Episode" homepage section, in array
+// order. Set to [] (empty array) to hide the section entirely.
+//   films:        two "Title (year)" strings, shown as "A VS B"
+//   artworks:     TMDB poster URLs (https://media.themoviedb.org/t/p/w500/…) or null
+//   status:       "recorded"  → "✳ Recorded · Releasing Soon" badge
+//                 "scheduled" → "Coming Soon" badge (+ expectedDate if set)
+//   label:        optional card label; defaults to "Next Episode"
+//   teaser:       optional one-line tagline shown below the films — or null
+//   expectedDate: optional free-form string e.g. "July 2026" — or null
+const UPCOMING_EPISODES = [
+  {
+    films: ["Argo (2012)", "Brotherhood of the Wolf (2001)"],
+    artworks: [
+      "https://media.themoviedb.org/t/p/w500/m5gPWFZFIp4UJFABgWyLkbXv8GX.jpg",
+      "https://media.themoviedb.org/t/p/w500/Ahd4F7azhjsxgXYjVyFmVzJu9LB.jpg"
+    ],
+    status: "recorded",
+    label: "Next Episode",
+    teaser: null,
+    expectedDate: null
+  },
+  {
+    films: ["The Studio (2025)", "A Real Pain (2024)"],
+    artworks: [
+      "https://media.themoviedb.org/t/p/w500/2c6ofLTa5CRfeQjVA1bWiYBdxQN.jpg",
+      "https://media.themoviedb.org/t/p/w500/67xRIXm5TxXRT4nV2V4AEJ9yq2d.jpg"
+    ],
+    status: "scheduled",
+    label: "Up Next",
+    teaser: null,
+    expectedDate: "Recording 11 July"
+  }
+];
 // ─────────────────────────────────────────────────────────────────────────────
 
 const EPISODES = [
@@ -25,8 +45,8 @@ const EPISODES = [
     date: "2026-06-07",
     duration: "1h 24m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/5e/21/5e21806a851e3157cb3e487d70fd797eb16e9fb0.jpg",
-    spotifyUrl: "",
-    appleUrl: "",
+    spotifyUrl: "https://open.spotify.com/episode/1lqf6oGzHW77nqtWv6zUK3",
+    appleUrl: "https://podcasts.apple.com/au/podcast/goodbye-lenin-2003-vs-highlander-1986/id1681472927?i=1000771541437",
     films: ["Goodbye Lenin (2003)", "Highlander (1986)"]
   },
 
@@ -168,7 +188,7 @@ const EPISODES = [
     duration: "1h 39m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/fd/6c/fd6cd3b5f5f8f9a30cb9c3d3369d553a5226dbf7.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/princess-mononoke-1997-vs-identity-2003/id1681472927?i=1000656740775",
     films: ["Princess Mononoke (1997)", "Identity (2003)"]
   },
   {
@@ -178,7 +198,7 @@ const EPISODES = [
     duration: "1h 51m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/50/cf/50cf14514fb135017d8af60e45c33075ba6921de.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/the-fast-and-the-furious-2001-vs-willy/id1681472927?i=1000651676545",
     films: ["The Fast and the Furious (2001)", "Willy Wonka and the Chocolate Factory (1971)"]
   },
   {
@@ -188,7 +208,7 @@ const EPISODES = [
     duration: "2h 00m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/a3/24/a3248a1ec4f5f3523de34f9399f8acb4b2fc2728.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/layer-cake-2004-vs-fargo-s05-2023/id1681472927?i=1000648657475",
     films: ["Layer Cake (2004)", "Fargo S05 (2023)"]
   },
   {
@@ -198,7 +218,7 @@ const EPISODES = [
     duration: "1h 48m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/44/74/4474f6eccbfe12899483ea54cef5f36d63538cdd.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/bruce-almighty-2003-vs-what-we-do-in-the-shadows-2014/id1681472927?i=1000642481949",
     films: ["Bruce Almighty (2003)", "What We Do in the Shadows (2014)"]
   },
   {
@@ -208,7 +228,7 @@ const EPISODES = [
     duration: "1h 53m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/d5/ab/d5ab9f5176b84bdfc351366997b6af108ba08f18.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/goldeneye-1995-vs-dark-waters-2019/id1681472927?i=1000640157189",
     films: ["Goldeneye (1995)", "Dark Waters (2019)"]
   },
   {
@@ -218,7 +238,7 @@ const EPISODES = [
     duration: "2h 10m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/73/0d/730d64ed7aa6b640ad255c3c55f6f9eb14a7abdd.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/arrival-2016-vs-babylon-2022/id1681472927?i=1000635330753",
     films: ["Arrival (2016)", "Babylon (2022)"]
   },
   {
@@ -228,7 +248,7 @@ const EPISODES = [
     duration: "1h 34m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/a6/cc/a6cc440c4168845ec901e8ae5a7830007c075bfa.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/ballers-2015-vs-you-dont-mess-with-the-zohan-2008/id1681472927?i=1000630591515",
     films: ["Ballers (2015)", "You Don't Mess With The Zohan (2008)"]
   },
   {
@@ -238,7 +258,7 @@ const EPISODES = [
     duration: "1h 44m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/c9/94/c994febdf27337807edb18aa07dfea3c618af460.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/solar-opposites-2020-vs-the-matrix-1999/id1681472927?i=1000628152982",
     films: ["Solar Opposites (2020)", "The Matrix (1999)"]
   },
   {
@@ -248,7 +268,7 @@ const EPISODES = [
     duration: "2h 02m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/52/ad/52ad5254a0351cf2d4d18e2178d449a6a969e168.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/silo-2023-vs-midsommar-2019/id1681472927?i=1000625846033",
     films: ["Silo (2023)", "Midsommar (2019)"]
   },
   {
@@ -258,7 +278,7 @@ const EPISODES = [
     duration: "1h 55m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/78/0d/780d8f7a6424f3a7932c6521ffbedef6e20564ae.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/bloodsport-1988-vs-barbarian-2022/id1681472927?i=1000620357732",
     films: ["Bloodsport (1988)", "Barbarian (2022)"]
   },
   {
@@ -268,7 +288,7 @@ const EPISODES = [
     duration: "1h 50m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/9f/ea/9fea160964a59c2b2f191a244c343fdb7cb708eb.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/tucker-and-dale-vs-evil-2010-vs-beef-2023/id1681472927?i=1000616541432",
     films: ["Tucker and Dale vs Evil (2010)", "BEEF (2023)"]
   },
   {
@@ -278,7 +298,7 @@ const EPISODES = [
     duration: "2h 07m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/eb/f7/ebf7a5b1513ae5b7101b2da0e638fc7b92e831c4.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/the-meg-2018-vs-the-faculty-1998/id1681472927?i=1000610275917",
     films: ["The Meg (2018)", "The Faculty (1998)"]
   },
   {
@@ -288,14 +308,7 @@ const EPISODES = [
     duration: "1h 41m",
     artwork: "https://uploads.podcloud.fr/uploads/covers/32/45/32456380848aed5dffdf6dc9d5b64fe62f798b4b.jpg",
     spotifyUrl: "https://open.spotify.com/show/6KbzgmH3YRS2mc0cbjd82y",
-    appleUrl: "https://podcasts.apple.com/au/podcast/couch-lobsters/id1681472927",
+    appleUrl: "https://podcasts.apple.com/au/podcast/the-glory-2023-vs-i-saw-the-devil-2010/id1681472927?i=1000608071034",
     films: ["The Glory (2023)", "I Saw the Devil (2010)"]
   }
 ];
-
-// Format date nicely. Split manually to avoid UTC-midnight off-by-one when
-// ISO strings are parsed as UTC but displayed in the visitor's local timezone.
-function formatDate(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
-}

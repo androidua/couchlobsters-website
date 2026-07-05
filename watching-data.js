@@ -1,5 +1,5 @@
 // Auto-generated from Google Sheets — do not edit manually.
-// To update: edit the Google Sheet; GitHub Actions syncs it hourly.
+// To update: edit the Google Sheet; GitHub Actions syncs it every 6 hours.
 var WATCHING = [
   {"title": "Severance", "who": "Jess", "type": "Series", "status": "Watched", "date": "2026-03", "notes": "Dima made me watch this."},
   {"title": "Scream 7", "who": "Dima", "type": "Film", "status": "Watched", "date": "2026-03", "notes": ""},

@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Python bytecode from .github/scripts
+__pycache__/
+*.pyc
+
+# Local Claude Code tooling / scratch files
+.claude/
+CLAUDE-CODE-PROMPT.md

@@ -2,8 +2,8 @@ name: Sync watching data from Google Sheets
 
 on:
   schedule:
-    - cron: '0 * * * *'   # Hourly — only commits when data actually changed
-  workflow_dispatch:        # Also triggerable manually from GitHub Actions UI
+    - cron: '0 */6 * * *'   # Every 6 hours — only commits when data actually changed
+  workflow_dispatch:          # Also triggerable manually from GitHub Actions UI
 
 permissions:
   contents: write           # Allows GITHUB_TOKEN to push commits
@@ -45,7 +45,7 @@ jobs:
           # Build the JS file — no timestamp so the file only changes when data changes
           out = [
               '// Auto-generated from Google Sheets — do not edit manually.',
-              '// To update: edit the Google Sheet; GitHub Actions syncs it hourly.',
+              '// To update: edit the Google Sheet; GitHub Actions syncs it every 6 hours.',
               'var WATCHING = [',
           ]
           for i, r in enumerate(rows):
@@ -58,6 +58,9 @@ jobs:
 
           print(f'Wrote {len(rows)} entries to watching-data.js')
           PYEOF
+
+      - name: Validate before committing
+        run: node .github/scripts/validate.js
 
       - name: Commit and push if changed
         run: |
