@@ -8,9 +8,19 @@ on:
 permissions:
   contents: write           # Allows GITHUB_TOKEN to push commits
 
+# Coalesce overlapping runs so two syncs never race on the same push.
+concurrency:
+  group: sync-watching
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
+    # Normal runs finish in seconds; this bounds a genuinely hung step instead of
+    # inheriting the 6-hour default. It does NOT cover GitHub failing to allocate a
+    # runner ("job not acquired by Runner of type hosted") — that is outside our
+    # control and self-heals on the next scheduled run.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
 

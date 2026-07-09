@@ -11,9 +11,19 @@ permissions:
   contents: write   # commit and push episodes-data.js + sitemap.xml
   issues: write     # open the manual-follow-ups issue for new episodes
 
+# Coalesce overlapping runs so two syncs never race on the same push.
+concurrency:
+  group: sync-episodes
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
+    # Normal runs finish in under a minute; this bounds a genuinely hung step instead
+    # of inheriting the 6-hour default. It does NOT cover GitHub failing to allocate a
+    # runner ("job not acquired by Runner of type hosted") — that is outside our
+    # control and self-heals on the next scheduled run.
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repo

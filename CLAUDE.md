@@ -207,7 +207,7 @@ Semantic versioning — bump in README badge + git tag in same commit:
 git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
-Current version: **v1.4.0**
+Current version: **v1.4.1**
 
 ### Pre-commit README checklist (minor and major bumps)
 
